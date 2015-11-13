@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">KitchenBook</string>
+    <string name="action_settings">Settings</string>
+
+    <string-array name="menu_array">
+        <item>Logout</item>
+    </string-array>
+
+</resources>
