@@ -33,19 +33,17 @@ public class KitchenBookActivity extends AppCompatActivity {
         Parse.initialize(this, "Cqa9bDcaRLejwe6hipEpT8G7K5QdFZYdrCY3MQuS", "qY5lFHoDXUUsWy3jZMBXeVlksbCXHIouRzsukSGM");
 
 
-        mMenuTitles = getResources().getStringArray(R.array.menu_array);
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerList = (ListView) findViewById(R.id.left_drawer);
-
-//        mDrawerList.setAdapter(new ArrayAdapter<>(this,
+//        mMenuTitles = getResources().getStringArray(R.array.menu_array);
+//        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+//        mDrawerList = (ListView) findViewById(R.id.left_drawer);
+//
+//        mDrawerList.setAdapter(new ArrayAdapter<String>(this,
 //                R.layout.drawer_list_item, mMenuTitles));
 //
 //        mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 //            @Override
 //            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                ParseUser.logOut();
-//                Login login  = new Login();
-//                Utils.replaceFragment(getFragmentManager(), android.R.id.content, login, false);
+//
 //            }
 //        });
 
