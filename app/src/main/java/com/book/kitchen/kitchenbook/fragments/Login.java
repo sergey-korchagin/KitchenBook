@@ -57,6 +57,9 @@ public class Login extends Fragment implements  View.OnClickListener{
             Utils.replaceFragment(getFragmentManager(), android.R.id.content, signIn, true);
         }else if(v.getId() == btnLogin.getId()){
 
+            InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+
             ParseUser.logInInBackground(userName.getText().toString(), userPassword.getText().toString(), new LogInCallback(){
             public void done(ParseUser user, ParseException e) {
                 if (user != null) {
