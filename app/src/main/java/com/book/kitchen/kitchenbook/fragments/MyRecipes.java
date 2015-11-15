@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.book.kitchen.kitchenbook.R;
+import com.book.kitchen.kitchenbook.Utils.Utils;
 
 /**
  * Created by User on 15/11/2015.
@@ -26,9 +27,12 @@ public class MyRecipes extends Fragment implements View.OnClickListener{
     @Override
     public void onClick(View v) {
         if(v.getId() == addRecipe.getId()){
-            Toast toast = Toast.makeText(v.getContext(),
-                    "Add recipe clicked", Toast.LENGTH_SHORT);
-            toast.show();
+//            Toast toast = Toast.makeText(v.getContext(),
+//                    "Add recipe clicked", Toast.LENGTH_SHORT);
+//            toast.show();
+
+            AddRecipe addRecipe = new AddRecipe();
+            Utils.replaceFragment(getParentFragment().getFragmentManager(), android.R.id.content, addRecipe, true);
         }
     }
 }
