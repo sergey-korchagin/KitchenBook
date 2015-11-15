@@ -18,13 +18,17 @@ import com.parse.ParseUser;
 import android.support.v4.app.FragmentManager;
 
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UnknownFormatConversionException;
 
 /**
  * Created by serge_000 on 13/11/2015.
  */
 public class KitchenBookMain extends Fragment {
-    Button button;
+    PublicRecipes publicRecipes;
+    MyRecipes myRecipes;
+    Settings settings;
 
     ViewPager pager;
     PagerAdapter pagerAdapter;
@@ -34,38 +38,45 @@ public class KitchenBookMain extends Fragment {
         View root = inflater.inflate(R.layout.fragment_main, container, false);
 
 
-//        pager = (ViewPager)root.findViewById(R.id.pager);
-//        pagerAdapter = new MyPagerAdapter(getSupportFragment.....);
-//        pager.setAdapter(pagerAdapter);
-//
-//        pager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-//
-//            @Override
-//            public void onPageSelected(int position) {
-//                Log.d("", "onPageSelected, position = " + position);
-//            }
-//
-//            @Override
-//            public void onPageScrolled(int position, float positionOffset,
-//                                       int positionOffsetPixels) {
-//            }
-//
-//            @Override
-//            public void onPageScrollStateChanged(int state) {
-//            }
-//        });
+        pager = (ViewPager)root.findViewById(R.id.pager);
+        pagerAdapter = new MyPagerAdapter(getChildFragmentManager(),initFragments() );
+        pager.setAdapter(pagerAdapter);
 
+        pager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
-
-        button = (Button)root.findViewById(R.id.logout);
-        button.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                ParseUser.logOut();
-                Login login = new Login();
-                Utils.replaceFragment(getFragmentManager(), android.R.id.content, login, false);
+            public void onPageSelected(int position) {
+            }
+
+            @Override
+            public void onPageScrolled(int position, float positionOffset,
+                                       int positionOffsetPixels) {
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
             }
         });
+
         return root;
+    }
+
+    private List<Fragment> initFragments() {
+
+
+        myRecipes = new MyRecipes();
+        publicRecipes = new PublicRecipes();
+        settings = new Settings();
+
+
+        List<Fragment> fragments = new ArrayList<>();
+        fragments.add(publicRecipes);
+        fragments.add(myRecipes);
+        fragments.add(settings);
+
+
+
+
+        return fragments;
     }
 }

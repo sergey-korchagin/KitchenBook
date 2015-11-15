@@ -13,6 +13,9 @@ import android.widget.TextView;
 
 import com.book.kitchen.kitchenbook.KitchenBookActivity;
 import com.book.kitchen.kitchenbook.R;
+import com.parse.ParseException;
+import com.parse.ParseUser;
+import com.parse.RequestPasswordResetCallback;
 
 /**
  * Created by serge_000 on 13/11/2015.
@@ -36,32 +39,25 @@ public class Utils {
         builder.setTitle(title)
                 .setMessage(message)
                 .setCancelable(true);
-//                .setNegativeButton("ОК, иду на кухню",
-//                        new DialogInterface.OnClickListener() {
-//                            public void onClick(DialogInterface dialog, int id) {
-//                                dialog.cancel();
-//                            }
-                 //       });
+
         AlertDialog alert = builder.create();
         alert.show();
     }
 
-    public static String showEditAlert(Context context,String title) {
+    public static void showForgotAlert(final Context context) {
         LayoutInflater li = LayoutInflater.from(context);
         View promptsView = li.inflate(R.layout.dialog, null);
 
-        String result;
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                 context);
 
-        // set prompts.xml to alertdialog builder
         alertDialogBuilder.setView(promptsView);
 
         final EditText userInput = (EditText) promptsView
                 .findViewById(R.id.editTextDialogUserInput);
         final TextView dialogTitle = (TextView)promptsView.findViewById(R.id.title);
-        dialogTitle.setText(title);
+        dialogTitle.setText("Please enter your email");
         // set dialog message
         alertDialogBuilder
                 .setCancelable(true)
@@ -70,7 +66,20 @@ public class Utils {
                             public void onClick(DialogInterface dialog, int id) {
                                 // get user input and set it to result
                                 // edit text
-                                Constants.dialogResult = userInput.getText().toString();
+                                if (!userInput.getText().toString().equals("")) {
+                                    ParseUser.requestPasswordResetInBackground(userInput.getText().toString(),
+                                            new RequestPasswordResetCallback() {
+                                                public void done(ParseException e) {
+                                                    if (e == null) {
+                                                        // An email was successfully sent with reset instructions.
+                                                        showAlert(context, "Success", "An email was successfully sent with reset instructions");
+                                                    } else {
+                                                        // Something went wrong. Look at the ParseException to see what's up.
+                                                        showAlert(context, "Error!", e.getMessage().toString());
+                                                    }
+                                                }
+                                            });
+                                }
                             }
                         });
         // create alert dialog
@@ -78,8 +87,5 @@ public class Utils {
 
         // show it
         alertDialog.show();
-        result = Constants.dialogResult;
-        Constants.dialogResult = "";
-  return result;
     }
 }

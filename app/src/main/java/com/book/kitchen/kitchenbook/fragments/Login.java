@@ -74,21 +74,7 @@ public class Login extends Fragment implements  View.OnClickListener{
             }
         });
         }else if(btnForgot.getId()==v.getId()) {
-            emailForRestore = Utils.showEditAlert(getActivity(), "Please enter your email");
-            if (!emailForRestore.equals("")) {
-                ParseUser.requestPasswordResetInBackground(emailForRestore,
-                        new RequestPasswordResetCallback() {
-                            public void done(ParseException e) {
-                                if (e == null) {
-                                    // An email was successfully sent with reset instructions.
-                                    Utils.showAlert(getActivity(), "Success", "An email was successfully sent with reset instructions");
-                                } else {
-                                    // Something went wrong. Look at the ParseException to see what's up.
-                                    Utils.showAlert(getActivity(), "Error!", e.getMessage().toString());
-                                }
-                            }
-                        });
-            }
+            Utils.showForgotAlert(getActivity());
         }
     }
 
