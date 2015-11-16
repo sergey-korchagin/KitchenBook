@@ -11,12 +11,18 @@ import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.book.kitchen.kitchenbook.R;
+import com.book.kitchen.kitchenbook.Utils.Utils;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
@@ -33,6 +39,14 @@ public class AddRecipe extends Fragment implements View.OnClickListener {
     boolean imageClicked = false;
     TextView buttonCamera;
     TextView buttonGallery;
+    TextView btnPost;
+    ParseUser currentUser;
+
+    EditText title;
+    String titleText;
+    EditText description;
+    String descriptionText;
+
 
     private static final int CAMERA_REQUEST = 1888;
     public static final int ACTIVITY_SELECT_IMAGE = 1889;
@@ -50,6 +64,14 @@ public class AddRecipe extends Fragment implements View.OnClickListener {
 
         buttonGallery = (TextView)root.findViewById(R.id.btnGallery);
         buttonGallery.setOnClickListener(this);
+
+        btnPost = (TextView)root.findViewById(R.id.post);
+        btnPost.setOnClickListener(this);
+
+        title = (EditText)root.findViewById(R.id.recipe_title);
+        description = (EditText)root.findViewById(R.id.recipe_description);
+
+        currentUser = ParseUser.getCurrentUser();
 
         return root;
 
@@ -72,8 +94,46 @@ public class AddRecipe extends Fragment implements View.OnClickListener {
             Intent i = new Intent(Intent.ACTION_PICK,
                     android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             startActivityForResult(i, ACTIVITY_SELECT_IMAGE);
+        }else if(btnPost.getId() == v.getId()){
+
+           if( getTextFromFields()){
+               ParseObject recipe1 = new ParseObject("recipe");
+               recipe1.put("userId",currentUser.getObjectId() );
+               recipe1.put("title",titleText);
+               recipe1.put("description", descriptionText);
+               recipe1.saveInBackground(new SaveCallback() {
+                   @Override
+                   public void done(ParseException e) {
+                       if(e == null){
+                           getFragmentManager().popBackStackImmediate();
+                       }else {
+                           e.printStackTrace();
+                       }
+                   }
+               });
+           }
+
         }
     }
+
+    public boolean getTextFromFields(){
+        titleText = title.getText().toString();
+        descriptionText = description.getText().toString();
+        if(titleText.equals("") && descriptionText.equals("")){
+            Utils.showAlert(getActivity(),"Empty field","Please fill title and description fields");
+            return false;
+        }
+       else if(titleText.equals("")){
+            Utils.showAlert(getActivity(),"Empty field","Please enter title");
+            return false;
+        }
+       else if(descriptionText.equals("")){
+            Utils.showAlert(getActivity(),"Empty field","Please enter description");
+            return false;
+        }
+        return true;
+    }
+
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

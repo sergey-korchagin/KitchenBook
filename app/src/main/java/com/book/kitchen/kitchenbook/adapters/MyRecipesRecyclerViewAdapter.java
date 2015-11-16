@@ -1,5 +1,6 @@
 package com.book.kitchen.kitchenbook.adapters;
 
+
 import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -15,23 +16,24 @@ import com.parse.ParseObject;
 
 import java.util.List;
 
+
 /**
- * Created by User on 15/11/2015.
+ * Created by User on 16/11/2015.
  */
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
+public class MyRecipesRecyclerViewAdapter extends RecyclerView.Adapter<MyRecipesRecyclerViewAdapter.ViewHolder> {
 
     Context context;
     List<ParseObject> mList;
 
 
-   public RecyclerViewAdapter(List<ParseObject> list)
+    public MyRecipesRecyclerViewAdapter(List<ParseObject> list)
     {
         mList = list;
 
     }
 
     @Override
-    public void onBindViewHolder(RecyclerViewAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(MyRecipesRecyclerViewAdapter.ViewHolder holder, int position) {
         holder.description.setText(mList.get(position).get("description").toString());
         holder.title.setText(mList.get(position).get("title").toString());
     }
@@ -47,9 +49,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         ViewHolder(View itemView) {
             super(itemView);
 
-            cv = (CardView) itemView.findViewById(R.id.cv);
-            description = (TextView)itemView.findViewById(R.id.tmpTv);
-            title= (TextView)itemView.findViewById(R.id.cardTitle);
+            cv = (CardView) itemView.findViewById(R.id.cvMy);
+            description = (TextView)itemView.findViewById(R.id.tmpTvMy);
+            title= (TextView)itemView.findViewById(R.id.cardTitleMy);
 
             description.setOnClickListener(this);
 
@@ -66,9 +68,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
 
     }
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.single_card_view, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.single_card_my_recipes, parent, false);
         context = parent.getContext();
         return new ViewHolder(v);
     }

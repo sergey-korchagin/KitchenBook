@@ -7,7 +7,17 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"></LinearLayout>
+        android:layout_weight="1">
+
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/rvMy"
+            android:scrollbars="vertical"
+            android:layout_weight="1" />
+
+
+    </LinearLayout>
 
     <LinearLayout
         android:orientation="horizontal"
