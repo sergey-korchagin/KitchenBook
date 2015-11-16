@@ -61,7 +61,8 @@ public class SignIn extends Fragment implements View.OnClickListener {
 //                                    Toast.LENGTH_SHORT);
 //                            toast.setGravity(Gravity.CENTER, 0, 0);
 //                            toast.show();
-
+                            KitchenBookMain kitchenBookMain = new KitchenBookMain();
+                            Utils.replaceFragment(getFragmentManager(), android.R.id.content, kitchenBookMain, false);
                         } else {
                             Utils.showAlert(getActivity(),"Error!", e.getMessage().toString());
                         }

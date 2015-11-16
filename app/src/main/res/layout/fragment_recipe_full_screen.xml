@@ -3,4 +3,41 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="165dp"
+        android:layout_margin="10dp">
+
+        <ImageView
+            android:layout_width="160dp"
+            android:layout_height="match_parent"
+            android:id="@+id/largeIcon"
+            android:background="@drawable/no_photo"
+            android:scaleType="centerCrop"
+            android:layout_gravity="right"
+            android:layout_marginRight="10dp" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="83dp"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Large Text"
+                android:id="@+id/fullScreenTitle" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Medium Text"
+                android:id="@+id/fulScreenDescription"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+    </LinearLayout>
 </LinearLayout>

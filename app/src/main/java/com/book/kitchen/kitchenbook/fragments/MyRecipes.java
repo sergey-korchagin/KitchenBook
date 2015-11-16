@@ -15,6 +15,7 @@ import com.book.kitchen.kitchenbook.R;
 import com.book.kitchen.kitchenbook.Utils.Utils;
 import com.book.kitchen.kitchenbook.adapters.MyRecipesRecyclerViewAdapter;
 import com.book.kitchen.kitchenbook.adapters.RecyclerViewAdapter;
+import com.book.kitchen.kitchenbook.interfaces.OnItemClickListener;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -28,10 +29,10 @@ import java.util.List;
  */
 public class MyRecipes extends Fragment implements View.OnClickListener{
     TextView addRecipe;
-
     RecyclerView rv;
     MyRecipesRecyclerViewAdapter recyclerViewAdapter;
     LinearLayoutManager mRecycleViewLayout;
+    OnItemClickListener onItemClickListener;
 
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -53,7 +54,7 @@ public class MyRecipes extends Fragment implements View.OnClickListener{
     public void getCategories() {
        ParseUser currentUser = ParseUser.getCurrentUser();
         ParseQuery query = new ParseQuery("recipe");
-        query.whereEqualTo("userId",currentUser.getObjectId());
+        query.whereEqualTo("userId", currentUser.getObjectId());
         query.findInBackground(new FindCallback() {
             @Override
             public void done(List objects, ParseException e) {
@@ -64,13 +65,16 @@ public class MyRecipes extends Fragment implements View.OnClickListener{
             public void done(Object o, Throwable throwable) {
                 if (o instanceof List) {
                     List<ParseObject> categories = (List<ParseObject>) o;
-                    recyclerViewAdapter = new MyRecipesRecyclerViewAdapter(categories);
+                    recyclerViewAdapter = new MyRecipesRecyclerViewAdapter(categories, onItemClickListener);
                     rv.setAdapter(recyclerViewAdapter);
 
                 }
             }
         });
 
+    }
+    public void setOnItemClickListener(OnItemClickListener listener){
+        this.onItemClickListener = listener;
     }
 
     @Override

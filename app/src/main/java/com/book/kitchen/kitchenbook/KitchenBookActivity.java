@@ -13,6 +13,7 @@ import android.widget.ListView;
 import com.book.kitchen.kitchenbook.Utils.Utils;
 import com.book.kitchen.kitchenbook.fragments.Login;
 import com.book.kitchen.kitchenbook.fragments.SplashScreen;
+import com.book.kitchen.kitchenbook.managers.SharedManager;
 import com.parse.Parse;
 import com.parse.ParseInstallation;
 import com.parse.ParseObject;
@@ -32,6 +33,7 @@ public class KitchenBookActivity extends AppCompatActivity {
         Parse.enableLocalDatastore(this);
         Parse.initialize(this, "Cqa9bDcaRLejwe6hipEpT8G7K5QdFZYdrCY3MQuS", "qY5lFHoDXUUsWy3jZMBXeVlksbCXHIouRzsukSGM");
 
+        SharedManager.getInstance().init(this);
 
 
 

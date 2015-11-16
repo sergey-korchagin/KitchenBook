@@ -50,6 +50,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:layout_gravity="left"
+                    android:scaleType="centerCrop"
                     android:layout_marginLeft="15dp"
                     android:src="@drawable/no_photo"
                     android:layout_weight="3" />

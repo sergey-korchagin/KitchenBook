@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.book.kitchen.kitchenbook.R;
 import com.book.kitchen.kitchenbook.Utils.Utils;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
@@ -46,7 +47,7 @@ public class AddRecipe extends Fragment implements View.OnClickListener {
     String titleText;
     EditText description;
     String descriptionText;
-
+    ParseFile file;
 
     private static final int CAMERA_REQUEST = 1888;
     public static final int ACTIVITY_SELECT_IMAGE = 1889;
@@ -101,6 +102,10 @@ public class AddRecipe extends Fragment implements View.OnClickListener {
                recipe1.put("userId",currentUser.getObjectId() );
                recipe1.put("title",titleText);
                recipe1.put("description", descriptionText);
+               recipe1.put("userName",currentUser.get("username"));
+               if(file!=null) {
+                   recipe1.put("mainImage", file);
+               }
                recipe1.saveInBackground(new SaveCallback() {
                    @Override
                    public void done(ParseException e) {
@@ -131,6 +136,9 @@ public class AddRecipe extends Fragment implements View.OnClickListener {
             Utils.showAlert(getActivity(),"Empty field","Please enter description");
             return false;
         }
+//        if(!titleText.equals("")){
+//            titleText = titleText.substring(0, 1).toUpperCase();
+//        }
         return true;
     }
 
@@ -147,6 +155,13 @@ public class AddRecipe extends Fragment implements View.OnClickListener {
                     photo = Bitmap.createBitmap(Bitmap.createScaledBitmap(photo, photo.getWidth(), photo.getHeight(), true), 0, 0, photo.getWidth(), photo.getHeight(), matrix, true);
                 }
                 mMainImage.setImageBitmap(photo);
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                // Compress image to lower quality scale 1 - 100
+                photo.compress(Bitmap.CompressFormat.JPEG, 10, stream);
+                byte[] image = stream.toByteArray();
+
+                // Create the ParseFile
+                file  = new ParseFile("picture_1.jpeg", image);
 
             }else if (requestCode == ACTIVITY_SELECT_IMAGE) {
                 Uri bitmapUri = data.getData();
@@ -164,6 +179,13 @@ public class AddRecipe extends Fragment implements View.OnClickListener {
                         photo = getResizedBitmap(photo, 2303, 4095);
                     }
                     mMainImage.setImageBitmap(photo);
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    // Compress image to lower quality scale 1 - 100
+                    photo.compress(Bitmap.CompressFormat.JPEG, 10, stream);
+                    byte[] image = stream.toByteArray();
+
+                    // Create the ParseFile
+                   file  = new ParseFile("picture_1.jpeg", image);
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
