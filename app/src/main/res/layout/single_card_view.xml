@@ -32,6 +32,7 @@
                     android:layout_height="fill_parent"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="Recipe Title"
+                    android:textStyle="bold"
                     android:gravity="center"
                     android:id="@+id/cardTitle" />
 
@@ -84,6 +85,17 @@
                     android:gravity="right"
                     android:layout_centerVertical="true"
                     android:layout_alignParentEnd="true" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:gravity="center"
+                    android:text="Small Text"
+                    android:layout_marginLeft="15dp"
+                    android:id="@+id/card_category"
+                    android:layout_alignTop="@+id/cardUserName"
+                    android:layout_alignParentStart="true" />
             </RelativeLayout>
 
 

@@ -49,6 +49,7 @@ public class MyRecipesRecyclerViewAdapter extends RecyclerView.Adapter<MyRecipes
     public void onBindViewHolder(final MyRecipesRecyclerViewAdapter.ViewHolder holder, int position) {
         holder.description.setText(mList.get(position).get("description").toString());
         holder.title.setText(mList.get(position).get("title").toString());
+        holder.category.setText(mList.get(position).get("category").toString());
         if (mList.get(position).get("mainImage") != null) {
             ParseFile applicantResume = (ParseFile) mList.get(position).get("mainImage");
             applicantResume.getDataInBackground(new GetDataCallback() {
@@ -72,6 +73,7 @@ public class MyRecipesRecyclerViewAdapter extends RecyclerView.Adapter<MyRecipes
         TextView title;
         ImageView icon;
         ImageView btnRemove;
+        TextView category;
 
 
         ViewHolder(View itemView) {
@@ -85,6 +87,7 @@ public class MyRecipesRecyclerViewAdapter extends RecyclerView.Adapter<MyRecipes
             description.setOnClickListener(this);
             btnRemove = (ImageView) itemView.findViewById(R.id.removeButton);
             btnRemove.setOnClickListener(this);
+            category = (TextView)itemView.findViewById(R.id.my_card_category);
         }
 
         @Override

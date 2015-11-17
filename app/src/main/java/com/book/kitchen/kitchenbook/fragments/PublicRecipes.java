@@ -7,7 +7,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.Spinner;
 
 import com.book.kitchen.kitchenbook.R;
 import com.book.kitchen.kitchenbook.Utils.Utils;
@@ -20,12 +22,13 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.io.BufferedInputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by User on 15/11/2015.
  */
-public class PublicRecipes extends Fragment{
+public class PublicRecipes extends Fragment implements AdapterView.OnItemSelectedListener{
     RecyclerView rv;
     RecyclerViewAdapter recyclerViewAdapter;
     LinearLayoutManager mRecycleViewLayout;
@@ -38,8 +41,9 @@ public class PublicRecipes extends Fragment{
         mRecycleViewLayout = new LinearLayoutManager(root.getContext());
         rv.setLayoutManager(mRecycleViewLayout);
         rv.setHasFixedSize(true);
-
         getCategories();
+
+
 
 
         return root;
@@ -53,7 +57,8 @@ public class PublicRecipes extends Fragment{
         ParseUser currentUser = ParseUser.getCurrentUser();
 
         ParseQuery query = new ParseQuery("recipe");
-        query.whereNotEqualTo("userId", currentUser.getObjectId());
+        query.whereNotEqualTo("userId", currentUser.getObjectId()).whereEqualTo("public","public");
+   //     query.whereEqualTo("public","public");
         query.findInBackground(new FindCallback() {
             @Override
             public void done(List objects, ParseException e) {
@@ -73,4 +78,13 @@ public class PublicRecipes extends Fragment{
     }
 
 
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
 }

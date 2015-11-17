@@ -44,7 +44,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public void onBindViewHolder(final RecyclerViewAdapter.ViewHolder holder, int position) {
         holder.description.setText(mList.get(position).get("description").toString());
         holder.title.setText(mList.get(position).get("title").toString());
-        holder.userName.setText(mList.get(position).get("userName").toString());
+        holder.userName.setText(Utils.capitalizeFirstLetter(mList.get(position).get("userName").toString()));
+        holder.category.setText(mList.get(position).get("category").toString());
         if(mList.get(position).get("mainImage")!=null){
             ParseFile applicantResume = (ParseFile) mList.get(position).get("mainImage");
             applicantResume.getDataInBackground(new GetDataCallback() {
@@ -62,6 +63,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
 
 
+
+
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         CardView cv;
@@ -69,6 +72,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         TextView title;
         ImageView icon;
         TextView userName;
+        TextView category;
+
         ViewHolder(View itemView) {
             super(itemView);
 
@@ -78,6 +83,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             icon = (ImageView)itemView.findViewById(R.id.itemIcon);
             userName = (TextView)itemView.findViewById(R.id.cardUserName);
             description.setOnClickListener(this);
+            category = (TextView)itemView.findViewById(R.id.card_category);
 
 
         }

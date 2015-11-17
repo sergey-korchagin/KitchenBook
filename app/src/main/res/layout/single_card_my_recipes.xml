@@ -33,7 +33,7 @@
                     android:layout_height="15dp"
                     android:layout_gravity="center"
                     android:background="@drawable/ic_action_cancel"
-                   android:layout_marginLeft="10dp"
+                   android:layout_marginLeft="5dp"
                     android:id="@+id/removeButton" />
 
                 <TextView
@@ -41,7 +41,7 @@
                     android:layout_height="fill_parent"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="Recipe Title"
-                    android:layout_marginRight="25dp"
+                    android:layout_marginRight="30dp"
                     android:textStyle="bold"
                     android:gravity="center"
                     android:layout_weight="1"
@@ -83,7 +83,17 @@
                 android:layout_height="30dp"
                 android:id="@+id/bottomLayoutMy"
                 android:layout_below="@+id/topLayoutMy"
-                ></LinearLayout>
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="Small Text"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="15dp"
+                    android:id="@+id/my_card_category" />
+            </LinearLayout>
 
 
         </RelativeLayout>

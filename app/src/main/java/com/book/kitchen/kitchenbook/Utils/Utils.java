@@ -88,4 +88,8 @@ public class Utils {
         // show it
         alertDialog.show();
     }
+
+    public static String capitalizeFirstLetter(String capitalizeMe){
+        return capitalizeMe.substring(0, 1).toUpperCase()+capitalizeMe.substring(1);
+    }
 }
