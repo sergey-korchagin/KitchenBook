@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">KitchenBook</string>
+    <string name="action_settings">Settings</string>
+    <string name="choice_category">Выберите категорию</string>
+    <string name="beef">Говядина</string>
+    <string name="chicken">Курица</string>
+    <string name="baking">Выпечка</string>
+    <string name="drinks">Напитки</string>
+    <string name="soup">Супы</string>
+
+
+</resources>

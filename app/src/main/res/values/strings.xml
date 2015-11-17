@@ -1,9 +1,18 @@
 <resources>
-    <string name="app_name">KitchenBook</string>
+    <string name="app_name" translatable="false">KitchenBook</string>
     <string name="action_settings">Settings</string>
 
     <string-array name="menu_array">
         <item>Logout</item>
     </string-array>
+
+        <!-- Add recipe-->
+    <string name="choice_category">Choice category</string>
+    <string name="beef">Beef</string>
+    <string name="chicken">Chicken</string>
+    <string name="baking">Baking</string>
+    <string name="drinks">Drinks</string>
+    <string name="soup">Soup</string>
+
 
 </resources>

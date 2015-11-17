@@ -93,10 +93,12 @@ public class AddRecipe extends Fragment implements View.OnClickListener, Adapter
         spinner.setOnItemSelectedListener(this);
         spinner.setPrompt("Category");
         List<String> elements = new ArrayList<String>();
-        elements.add("Choice category"); // 0 position
-        elements.add("Beef");
-        elements.add("Chicken");
-        elements.add("Baking");
+        elements.add(getResources().getString(R.string.choice_category)); // 0 position
+        elements.add(getResources().getString(R.string.beef));
+        elements.add(getResources().getString(R.string.chicken));
+        elements.add(getResources().getString(R.string.baking));
+        elements.add(getResources().getString(R.string.drinks));
+        elements.add(getResources().getString(R.string.soup));
 
         //Создаем для spinner адаптер:
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(),R.layout.support_simple_spinner_dropdown_item,elements);
