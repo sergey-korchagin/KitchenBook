@@ -1,7 +1,9 @@
 package com.book.kitchen.kitchenbook.adapters;
 
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.widget.CardView;
@@ -29,13 +31,17 @@ import java.util.List;
 public class MyRecipesRecyclerViewAdapter extends RecyclerView.Adapter<MyRecipesRecyclerViewAdapter.ViewHolder> {
 
     Context context;
-     static List<ParseObject> mList;
-    static OnItemClickListener onItemClickListener;
+    List<ParseObject> mList;
+    OnItemClickListener onItemClickListener;
 
-    public MyRecipesRecyclerViewAdapter(List<ParseObject> list, OnItemClickListener listener)
-    {
+    public MyRecipesRecyclerViewAdapter(List<ParseObject> list, OnItemClickListener listener) {
         mList = list;
         onItemClickListener = listener;
+
+    }
+
+    public void updateChanges(int position) {
+        notifyItemChanged(position);
 
     }
 
@@ -43,7 +49,7 @@ public class MyRecipesRecyclerViewAdapter extends RecyclerView.Adapter<MyRecipes
     public void onBindViewHolder(final MyRecipesRecyclerViewAdapter.ViewHolder holder, int position) {
         holder.description.setText(mList.get(position).get("description").toString());
         holder.title.setText(mList.get(position).get("title").toString());
-        if(mList.get(position).get("mainImage")!=null){
+        if (mList.get(position).get("mainImage") != null) {
             ParseFile applicantResume = (ParseFile) mList.get(position).get("mainImage");
             applicantResume.getDataInBackground(new GetDataCallback() {
                 public void done(byte[] data, ParseException e) {
@@ -59,30 +65,47 @@ public class MyRecipesRecyclerViewAdapter extends RecyclerView.Adapter<MyRecipes
     }
 
 
-
-    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         CardView cv;
         TextView description;
         TextView title;
         ImageView icon;
+        ImageView btnRemove;
+
 
         ViewHolder(View itemView) {
             super(itemView);
 
             cv = (CardView) itemView.findViewById(R.id.cvMy);
-            description = (TextView)itemView.findViewById(R.id.tmpTvMy);
-            title= (TextView)itemView.findViewById(R.id.cardTitleMy);
-            icon = (ImageView)itemView.findViewById(R.id.itemIconMy);
+            description = (TextView) itemView.findViewById(R.id.tmpTvMy);
+            title = (TextView) itemView.findViewById(R.id.cardTitleMy);
+            icon = (ImageView) itemView.findViewById(R.id.itemIconMy);
 
             description.setOnClickListener(this);
-
+            btnRemove = (ImageView) itemView.findViewById(R.id.removeButton);
+            btnRemove.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
-            if(v.getId() == description.getId()) {
+            if (v.getId() == description.getId()) {
                 onItemClickListener.onCardClickListener(mList.get(getAdapterPosition()));
+            } else if (v.getId() == btnRemove.getId()) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("Delete")
+                        .setMessage("Are you sure?")
+                        .setCancelable(true).setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ParseObject.createWithoutData("recipe", mList.get(getAdapterPosition()).getObjectId()).deleteEventually();
+                        mList.remove(mList.get(getAdapterPosition()));
+                        MyRecipesRecyclerViewAdapter.this.updateChanges(getAdapterPosition());
+                    }
+                });
+
+                AlertDialog alert = builder.create();
+                alert.show();
 
             }
         }

@@ -50,8 +50,10 @@ public class PublicRecipes extends Fragment{
     }
 
     public void getCategories() {
+        ParseUser currentUser = ParseUser.getCurrentUser();
 
         ParseQuery query = new ParseQuery("recipe");
+        query.whereNotEqualTo("userId", currentUser.getObjectId());
         query.findInBackground(new FindCallback() {
             @Override
             public void done(List objects, ParseException e) {

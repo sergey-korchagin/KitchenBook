@@ -69,7 +69,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         TextView title;
         ImageView icon;
         TextView userName;
-
         ViewHolder(View itemView) {
             super(itemView);
 
@@ -79,6 +78,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             icon = (ImageView)itemView.findViewById(R.id.itemIcon);
             userName = (TextView)itemView.findViewById(R.id.cardUserName);
             description.setOnClickListener(this);
+
 
         }
 

@@ -56,11 +56,7 @@ public class SignIn extends Fragment implements View.OnClickListener {
                     public void done(ParseException e) {
                         if (e == null) {
                             // Hooray! Let them use the app now.
-//                            Toast toast = Toast.makeText(getActivity(),
-//                                    "Success",
-//                                    Toast.LENGTH_SHORT);
-//                            toast.setGravity(Gravity.CENTER, 0, 0);
-//                            toast.show();
+
                             KitchenBookMain kitchenBookMain = new KitchenBookMain();
                             Utils.replaceFragment(getFragmentManager(), android.R.id.content, kitchenBookMain, false);
                         } else {

@@ -1,12 +1,14 @@
 package com.book.kitchen.kitchenbook.fragments;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -79,7 +81,8 @@ public class MyRecipes extends Fragment implements View.OnClickListener{
 
     @Override
     public void onClick(View v) {
-        if(v.getId() == addRecipe.getId()){
+        if(v.getId() == addRecipe.getId()){  InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
             AddRecipe addRecipe = new AddRecipe();
             Utils.replaceFragment(getParentFragment().getFragmentManager(), android.R.id.content, addRecipe, true);
         }
