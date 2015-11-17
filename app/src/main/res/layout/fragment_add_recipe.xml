@@ -111,18 +111,32 @@
                     android:layout_gravity="right" />
             </LinearLayout>
         </LinearLayout>
-
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp">
         <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Public"
             android:id="@+id/isPublic"
-            android:checked="false" />
-        <Spinner
+            android:checked="false"
+            android:layout_gravity="center" />
+
+
+
+            <Spinner
             android:id="@+id/spinner"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            />
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="25dp"
+            android:layout_gravity="right"
+            android:gravity="right"
+            android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
 
         <TextView
             android:layout_width="wrap_content"
@@ -131,6 +145,7 @@
             android:text="Ingredients"
             android:layout_marginTop="10dp"
             android:layout_gravity="center_horizontal"
+            android:gravity="right"
             android:id="@+id/textView4" />
 
 

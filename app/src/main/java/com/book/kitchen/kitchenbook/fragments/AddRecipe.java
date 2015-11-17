@@ -159,6 +159,8 @@ public class AddRecipe extends Fragment implements View.OnClickListener, Adapter
            }
             InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+        }else if(mIsPublic.getId() == v.getId() && mIsPublic.isChecked()){
+            Utils.showAlert(getActivity(),"Alert", "All users will see your recipe!");
         }
     }
 

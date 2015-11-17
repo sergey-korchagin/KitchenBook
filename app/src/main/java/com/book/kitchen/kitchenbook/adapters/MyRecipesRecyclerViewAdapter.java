@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.book.kitchen.kitchenbook.R;
+import com.book.kitchen.kitchenbook.Utils.Utils;
 import com.book.kitchen.kitchenbook.interfaces.OnItemClickListener;
 import com.parse.GetDataCallback;
 import com.parse.ParseException;
@@ -50,6 +51,7 @@ public class MyRecipesRecyclerViewAdapter extends RecyclerView.Adapter<MyRecipes
         holder.description.setText(mList.get(position).get("description").toString());
         holder.title.setText(mList.get(position).get("title").toString());
         holder.category.setText(mList.get(position).get("category").toString());
+        holder.public_or_private.setText(Utils.capitalizeFirstLetter(mList.get(position).get("public").toString()));
         if (mList.get(position).get("mainImage") != null) {
             ParseFile applicantResume = (ParseFile) mList.get(position).get("mainImage");
             applicantResume.getDataInBackground(new GetDataCallback() {
@@ -74,6 +76,7 @@ public class MyRecipesRecyclerViewAdapter extends RecyclerView.Adapter<MyRecipes
         ImageView icon;
         ImageView btnRemove;
         TextView category;
+        TextView public_or_private;
 
 
         ViewHolder(View itemView) {
@@ -88,6 +91,7 @@ public class MyRecipesRecyclerViewAdapter extends RecyclerView.Adapter<MyRecipes
             btnRemove = (ImageView) itemView.findViewById(R.id.removeButton);
             btnRemove.setOnClickListener(this);
             category = (TextView)itemView.findViewById(R.id.my_card_category);
+            public_or_private = (TextView)itemView.findViewById(R.id.public_private);
         }
 
         @Override
