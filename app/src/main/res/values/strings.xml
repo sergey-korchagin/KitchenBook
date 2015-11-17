@@ -13,6 +13,9 @@
     <string name="baking">Baking</string>
     <string name="drinks">Drinks</string>
     <string name="soup">Soup</string>
+    <string name="public_recipes">Public recipes</string>
+    <string name="my_recipes">My recipes</string>
+    <string name="settings_my">Sellings</string>
 
 
 </resources>

@@ -46,7 +46,7 @@ public class KitchenBookMain extends Fragment implements OnItemClickListener{
 
 
         pager = (ViewPager)root.findViewById(R.id.pager);
-        pagerAdapter = new MyPagerAdapter(getChildFragmentManager(),initFragments() );
+        pagerAdapter = new MyPagerAdapter(getChildFragmentManager(),initFragments(), getActivity());
         pager.setAdapter(pagerAdapter);
 
         pager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {

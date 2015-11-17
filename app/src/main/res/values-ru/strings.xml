@@ -7,6 +7,9 @@
     <string name="baking">Выпечка</string>
     <string name="drinks">Напитки</string>
     <string name="soup">Супы</string>
+    <string name="public_recipes">Рецепты пользователей</string>
+    <string name="my_recipes">Мои рецепты</string>
+    <string name="settings_my">Настройки</string>
 
 
 </resources>
