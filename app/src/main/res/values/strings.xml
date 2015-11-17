@@ -16,6 +16,7 @@
     <string name="public_recipes">Public recipes</string>
     <string name="my_recipes">My recipes</string>
     <string name="settings_my">Sellings</string>
+    <string name="no_internet">No internet - no recipes!</string>
 
 
 </resources>

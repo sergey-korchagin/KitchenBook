@@ -1,7 +1,11 @@
 package com.book.kitchen.kitchenbook.fragments;
 
 import android.app.Fragment;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -36,6 +40,7 @@ public class MyRecipes extends Fragment implements View.OnClickListener{
     LinearLayoutManager mRecycleViewLayout;
     OnItemClickListener onItemClickListener;
 
+    FrameLayout errorLayout;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_my_recipes, container, false);
@@ -46,9 +51,12 @@ public class MyRecipes extends Fragment implements View.OnClickListener{
         mRecycleViewLayout = new LinearLayoutManager(root.getContext());
         rv.setLayoutManager(mRecycleViewLayout);
         rv.setHasFixedSize(true);
+        errorLayout = (FrameLayout) root.findViewById(R.id.networkErrorLayoutMy);
+
 
         getCategories();
 
+        intiReciever();
 
         return root;
     }
@@ -85,6 +93,28 @@ public class MyRecipes extends Fragment implements View.OnClickListener{
             imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
             AddRecipe addRecipe = new AddRecipe();
             Utils.replaceFragment(getParentFragment().getFragmentManager(), android.R.id.content, addRecipe, true);
+        }
+    }
+
+    private  void intiReciever(){
+        getActivity().registerReceiver(new BroadcastReceiver() {
+            public void onReceive(Context context, Intent intent) {
+                if(isDataConnected()){
+                    // Toast.makeText( context, "Active Network Type : connected", Toast.LENGTH_SHORT ).show();
+                    errorLayout.setVisibility(View.GONE);
+                }else {
+                    errorLayout.setVisibility(View.VISIBLE);
+                }
+            }
+        }, new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE"));
+
+    }
+    private boolean isDataConnected() {
+        try {
+            ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+            return cm.getActiveNetworkInfo().isConnectedOrConnecting();
+        } catch (Exception e) {
+            return false;
         }
     }
 }

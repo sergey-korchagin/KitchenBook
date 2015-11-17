@@ -10,6 +10,7 @@
     <string name="public_recipes">Рецепты пользователей</string>
     <string name="my_recipes">Мои рецепты</string>
     <string name="settings_my">Настройки</string>
+    <string name="no_internet">Нет интернета - Нет рецептов!</string>
 
 
 </resources>
