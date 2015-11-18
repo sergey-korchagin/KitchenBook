@@ -11,6 +11,8 @@
     <string name="my_recipes">Мои рецепты</string>
     <string name="settings_my">Настройки</string>
     <string name="no_internet">Нет интернета - Нет рецептов!</string>
+    <string name="loading">Загружается...</string>
+
 
 
 </resources>

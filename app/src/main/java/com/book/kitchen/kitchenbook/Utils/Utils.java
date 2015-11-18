@@ -92,4 +92,32 @@ public class Utils {
     public static String capitalizeFirstLetter(String capitalizeMe){
         return capitalizeMe.substring(0, 1).toUpperCase()+capitalizeMe.substring(1);
     }
+
+
+    public static String getCategoryFromCode(Context context, int code){
+        String category =context.getResources().getString(R.string.choice_category);
+        switch (code){
+            case 0:
+                category = context.getResources().getString(R.string.choice_category);
+                break;
+            case 1:
+                category = context.getResources().getString(R.string.beef);
+                break;
+            case 2:
+                category = context.getResources().getString(R.string.chicken);
+                break;
+            case 3:
+                category = context.getResources().getString(R.string.baking);
+                break;
+            case 4:
+                category = context.getResources().getString(R.string.drinks);
+                break;
+            case 5:
+                category = context.getResources().getString(R.string.soup);
+                break;
+
+        }
+
+        return category;
+    }
 }

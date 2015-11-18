@@ -1,6 +1,7 @@
 package com.book.kitchen.kitchenbook.fragments;
 
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -40,10 +41,14 @@ public class PublicRecipes extends Fragment implements AdapterView.OnItemSelecte
     RecyclerViewAdapter recyclerViewAdapter;
     LinearLayoutManager mRecycleViewLayout;
     OnItemClickListener onItemClickListener;
+    ProgressDialog progressDialog;
 
     FrameLayout errorLayout;
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_public_recipes, container, false);
+
+        progressDialog = ProgressDialog.show(getActivity(),"", getActivity().getResources().getString(R.string.loading));
+
         rv = (RecyclerView) root.findViewById(R.id.rv);
         mRecycleViewLayout = new LinearLayoutManager(root.getContext());
         rv.setLayoutManager(mRecycleViewLayout);
@@ -66,17 +71,19 @@ public class PublicRecipes extends Fragment implements AdapterView.OnItemSelecte
         ParseUser currentUser = ParseUser.getCurrentUser();
 
         ParseQuery query = new ParseQuery("recipe");
-        query.whereNotEqualTo("userId", currentUser.getObjectId()).whereEqualTo("public","public");
+        query.whereNotEqualTo("userId", currentUser.getObjectId()).whereEqualTo("public", "public");
    //     query.whereEqualTo("public","public");
         query.findInBackground(new FindCallback() {
             @Override
             public void done(List objects, ParseException e) {
             }
+
             @Override
             public void done(Object o, Throwable throwable) {
                 if (o instanceof List) {
                     List<ParseObject> categories = (List<ParseObject>) o;
-                    recyclerViewAdapter = new RecyclerViewAdapter(categories,onItemClickListener);
+                    progressDialog.dismiss();
+                    recyclerViewAdapter = new RecyclerViewAdapter(categories, onItemClickListener);
                     rv.setAdapter(recyclerViewAdapter);
 
                 }

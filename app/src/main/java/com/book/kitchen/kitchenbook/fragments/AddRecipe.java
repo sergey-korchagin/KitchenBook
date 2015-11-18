@@ -1,6 +1,7 @@
 package com.book.kitchen.kitchenbook.fragments;
 
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -58,7 +59,9 @@ public class AddRecipe extends Fragment implements View.OnClickListener, Adapter
     ParseFile file;
     CheckBox mIsPublic;
     Spinner spinner;
-    String category;
+    int category;
+
+    ProgressDialog progressDialog;
 
     private static final int CAMERA_REQUEST = 1888;
     public static final int ACTIVITY_SELECT_IMAGE = 1889;
@@ -132,6 +135,7 @@ public class AddRecipe extends Fragment implements View.OnClickListener, Adapter
         }else if(btnPost.getId() == v.getId()){
 
            if( getTextFromFields()){
+               progressDialog = ProgressDialog.show(getActivity(),"",getActivity().getResources().getString(R.string.loading));
                ParseObject recipe1 = new ParseObject("recipe");
                recipe1.put("userId",currentUser.getObjectId() );
                recipe1.put("title",titleText);
@@ -152,7 +156,9 @@ public class AddRecipe extends Fragment implements View.OnClickListener, Adapter
                    public void done(ParseException e) {
                        if (e == null) {
                            getFragmentManager().popBackStackImmediate();
+                           progressDialog.dismiss();
                        } else {
+                           progressDialog.dismiss();
                            e.printStackTrace();
                        }
                    }
@@ -264,7 +270,7 @@ public class AddRecipe extends Fragment implements View.OnClickListener, Adapter
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         if(position!=0) {
             spinner.setSelected(true);
-            category = parent.getItemAtPosition(position).toString();
+            category = position;
         }
     }
 

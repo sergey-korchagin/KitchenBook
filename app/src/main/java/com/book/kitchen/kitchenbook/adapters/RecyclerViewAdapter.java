@@ -45,7 +45,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         holder.description.setText(mList.get(position).get("description").toString());
         holder.title.setText(mList.get(position).get("title").toString());
         holder.userName.setText(Utils.capitalizeFirstLetter(mList.get(position).get("userName").toString()));
-        holder.category.setText(mList.get(position).get("category").toString());
+        holder.category.setText(Utils.getCategoryFromCode(context, (int) mList.get(position).get("category")));
         if(mList.get(position).get("mainImage")!=null){
             ParseFile applicantResume = (ParseFile) mList.get(position).get("mainImage");
             applicantResume.getDataInBackground(new GetDataCallback() {

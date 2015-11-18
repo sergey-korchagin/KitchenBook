@@ -1,6 +1,7 @@
 package com.book.kitchen.kitchenbook.fragments;
 
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -39,11 +40,14 @@ public class MyRecipes extends Fragment implements View.OnClickListener{
     MyRecipesRecyclerViewAdapter recyclerViewAdapter;
     LinearLayoutManager mRecycleViewLayout;
     OnItemClickListener onItemClickListener;
+    ProgressDialog progressDialog;
 
     FrameLayout errorLayout;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_my_recipes, container, false);
+        progressDialog = ProgressDialog.show(getActivity(),"",getActivity().getResources().getString(R.string.loading));
+
         addRecipe = (TextView)root.findViewById(R.id.addRecipe);
         addRecipe.setOnClickListener(this);
 
@@ -75,6 +79,7 @@ public class MyRecipes extends Fragment implements View.OnClickListener{
             public void done(Object o, Throwable throwable) {
                 if (o instanceof List) {
                     List<ParseObject> categories = (List<ParseObject>) o;
+                    progressDialog.dismiss();
                     recyclerViewAdapter = new MyRecipesRecyclerViewAdapter(categories, onItemClickListener);
                     rv.setAdapter(recyclerViewAdapter);
 

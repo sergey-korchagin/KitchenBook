@@ -50,7 +50,7 @@ public class MyRecipesRecyclerViewAdapter extends RecyclerView.Adapter<MyRecipes
     public void onBindViewHolder(final MyRecipesRecyclerViewAdapter.ViewHolder holder, int position) {
         holder.description.setText(mList.get(position).get("description").toString());
         holder.title.setText(mList.get(position).get("title").toString());
-        holder.category.setText(mList.get(position).get("category").toString());
+        holder.category.setText(Utils.getCategoryFromCode(context,(int) mList.get(position).get("category")));//.toString());
         holder.public_or_private.setText(Utils.capitalizeFirstLetter(mList.get(position).get("public").toString()));
         if (mList.get(position).get("mainImage") != null) {
             ParseFile applicantResume = (ParseFile) mList.get(position).get("mainImage");
@@ -131,5 +131,8 @@ public class MyRecipesRecyclerViewAdapter extends RecyclerView.Adapter<MyRecipes
     public int getItemCount() {
         return mList.size();
     }
+
+
+
 
 }
