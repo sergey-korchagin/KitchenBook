@@ -13,7 +13,9 @@ import android.widget.TextView;
 
 import com.book.kitchen.kitchenbook.KitchenBookActivity;
 import com.book.kitchen.kitchenbook.R;
+import com.parse.GetCallback;
 import com.parse.ParseException;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.RequestPasswordResetCallback;
 
@@ -67,6 +69,9 @@ public class Utils {
                                 // get user input and set it to result
                                 // edit text
                                 if (!userInput.getText().toString().equals("")) {
+
+
+
                                     ParseUser.requestPasswordResetInBackground(userInput.getText().toString(),
                                             new RequestPasswordResetCallback() {
                                                 public void done(ParseException e) {
@@ -89,7 +94,7 @@ public class Utils {
         alertDialog.show();
     }
 
-    public static String capitalizeFirstLetter(String capitalizeMe){
+public static String capitalizeFirstLetter(String capitalizeMe){
         return capitalizeMe.substring(0, 1).toUpperCase()+capitalizeMe.substring(1);
     }
 
