@@ -73,32 +73,24 @@ public class Utils {
                                 if (!userInput.getText().toString().equals("")) {
 
                                     ParseQuery<ParseUser> query = ParseUser.getQuery();
-                                    query.whereEqualTo("email",userInput.getText().toString());
+                                    query.whereEqualTo("email", userInput.getText().toString());
                                     query.findInBackground(new FindCallback<ParseUser>() {
                                         @Override
                                         public void done(List<ParseUser> objects, ParseException e) {
-                                            if(e== null){
-                                                objects.get(0).get("email").toString();
-                                                e.toString();
-                                            }
-                                            else{
+                                            if (e == null) {
+                                                if ((boolean) objects.get(0).get("fromfacebook")) {
+                                                    showAlert(context,"", "User was registered with facebook, please go to facebook to change password!");
+                                                }else {
+                                                    newPassword(userInput.getText().toString(), context);
+                                                }
 
+                                            } else {
+                                                showAlert(context, "Error!", e.getMessage().toString());
                                             }
                                         }
                                     });
 
-                                    ParseUser.requestPasswordResetInBackground(userInput.getText().toString(),
-                                            new RequestPasswordResetCallback() {
-                                                public void done(ParseException e) {
-                                                    if (e == null) {
-                                                        // An email was successfully sent with reset instructions.
-                                                        showAlert(context, "Success", "An email was successfully sent with reset instructions");
-                                                    } else {
-                                                        // Something went wrong. Look at the ParseException to see what's up.
-                                                        showAlert(context, "Error!", e.getMessage().toString());
-                                                    }
-                                                }
-                                            });
+
                                 }
                             }
                         });
@@ -107,6 +99,21 @@ public class Utils {
 
         // show it
         alertDialog.show();
+    }
+
+    public static void newPassword(String user,final Context context){
+        ParseUser.requestPasswordResetInBackground(user,
+                new RequestPasswordResetCallback() {
+                    public void done(ParseException e) {
+                        if (e == null) {
+                            // An email was successfully sent with reset instructions.
+                            showAlert(context, "Success", "An email was successfully sent with reset instructions");
+                        } else {
+                            // Something went wrong. Look at the ParseException to see what's up.
+                            showAlert(context, "Error!", e.getMessage().toString());
+                        }
+                    }
+                });
     }
 
     public static String capitalizeFirstLetter(String capitalizeMe){

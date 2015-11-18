@@ -101,6 +101,7 @@ public class Login extends Fragment implements  View.OnClickListener{
                                     user.setUsername(facebookName);
                                     user.setPassword("facebookPassword");
                                     user.setEmail(facebookEmail);
+                                    user.put("fromfacebook",true);
 
                                     InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                                     imm.hideSoftInputFromWindow(root.getWindowToken(), 0);
