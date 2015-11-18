@@ -2,6 +2,7 @@ package com.book.kitchen.kitchenbook.fragments;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -14,6 +15,11 @@ import android.widget.TextView;
 
 import com.book.kitchen.kitchenbook.R;
 import com.book.kitchen.kitchenbook.Utils.Utils;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
@@ -31,6 +37,9 @@ public class Login extends Fragment implements  View.OnClickListener{
 
     String emailForRestore;
 
+    LoginButton loginButton;
+    CallbackManager callbackManager;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -47,6 +56,32 @@ public class Login extends Fragment implements  View.OnClickListener{
 
         btnForgot = (TextView)root.findViewById(R.id.forgot_password);
         btnForgot.setOnClickListener(this);
+
+        loginButton = (LoginButton) root.findViewById(R.id.login_button);
+        loginButton.setReadPermissions("user_friends");
+        // If using in a fragment
+        loginButton.setFragment(this);
+        // Other app specific specialization
+
+        // Callback registration
+        callbackManager = CallbackManager.Factory.create();
+        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                // App code
+            }
+
+            @Override
+            public void onCancel() {
+                // App code
+            }
+
+            @Override
+            public void onError(FacebookException exception) {
+                // App code
+            }
+        });
+
         return root;
     }
 
@@ -80,6 +115,10 @@ public class Login extends Fragment implements  View.OnClickListener{
             Utils.showForgotAlert(getActivity());
         }
     }
-
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+    }
 
 }

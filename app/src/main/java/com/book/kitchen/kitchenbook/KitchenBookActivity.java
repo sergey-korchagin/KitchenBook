@@ -14,6 +14,8 @@ import com.book.kitchen.kitchenbook.Utils.Utils;
 import com.book.kitchen.kitchenbook.fragments.Login;
 import com.book.kitchen.kitchenbook.fragments.SplashScreen;
 import com.book.kitchen.kitchenbook.managers.SharedManager;
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
 import com.parse.Parse;
 import com.parse.ParseInstallation;
 import com.parse.ParseObject;
@@ -34,6 +36,8 @@ public class KitchenBookActivity extends AppCompatActivity {
         Parse.initialize(this, "Cqa9bDcaRLejwe6hipEpT8G7K5QdFZYdrCY3MQuS", "qY5lFHoDXUUsWy3jZMBXeVlksbCXHIouRzsukSGM");
 
         SharedManager.getInstance().init(this);
+        FacebookSdk.sdkInitialize(getApplicationContext());
+
 
 
 
@@ -48,6 +52,23 @@ public class KitchenBookActivity extends AppCompatActivity {
     public void onBackPressed() {
 //        super.onBackPressed();
         getFragmentManager().popBackStackImmediate();
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // Logs 'install' and 'app activate' App Events.
+        AppEventsLogger.activateApp(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        // Logs 'app deactivate' App Event.
+        AppEventsLogger.deactivateApp(this);
     }
 
 }
