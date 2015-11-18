@@ -83,8 +83,14 @@ public class Login extends Fragment implements  View.OnClickListener{
                             public void onCompleted(
                                     JSONObject object,
                                     GraphResponse response) {
+                                try {
+                                    String name = object.getString("name");
+                                    name.toString();
 
-                           
+                                }catch (Exception e){
+                                    e.printStackTrace();
+                                }
+
                                 // Application code
                             }
                         });
