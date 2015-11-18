@@ -9,6 +9,7 @@ import android.widget.Button;
 
 import com.book.kitchen.kitchenbook.R;
 import com.book.kitchen.kitchenbook.Utils.Utils;
+import com.facebook.login.LoginManager;
 import com.parse.ParseUser;
 
 /**
@@ -27,6 +28,7 @@ public class Settings extends Fragment {
             @Override
             public void onClick(View v) {
                 ParseUser.logOut();
+                LoginManager.getInstance().logOut();
                 Login login = new Login();
                 Utils.replaceFragment(getParentFragment().getFragmentManager(), android.R.id.content, login, false);
             }

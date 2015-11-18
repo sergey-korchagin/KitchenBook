@@ -1,5 +1,6 @@
 package com.book.kitchen.kitchenbook;
 
+import android.content.Intent;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -36,7 +37,7 @@ public class KitchenBookActivity extends AppCompatActivity {
         Parse.initialize(this, "Cqa9bDcaRLejwe6hipEpT8G7K5QdFZYdrCY3MQuS", "qY5lFHoDXUUsWy3jZMBXeVlksbCXHIouRzsukSGM");
 
         SharedManager.getInstance().init(this);
-        FacebookSdk.sdkInitialize(getApplicationContext());
+       FacebookSdk.sdkInitialize(getApplicationContext());
 
 
 
@@ -70,5 +71,6 @@ public class KitchenBookActivity extends AppCompatActivity {
         // Logs 'app deactivate' App Event.
         AppEventsLogger.deactivateApp(this);
     }
+
 
 }

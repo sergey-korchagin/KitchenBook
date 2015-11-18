@@ -2,10 +2,12 @@ package com.book.kitchen.kitchenbook.fragments;
 
 import android.app.DownloadManager;
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +29,7 @@ import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.RequestPasswordResetCallback;
+import com.parse.SignUpCallback;
 
 import org.json.JSONObject;
 
@@ -42,15 +45,19 @@ public class Login extends Fragment implements  View.OnClickListener{
     EditText userName;
     EditText userPassword;
 
-    String emailForRestore;
+
+    String facebookEmail;
+    String facebookName;
 
     LoginButton loginButton;
     CallbackManager callbackManager;
 
+    ProgressDialog progressDialog;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_login, container, false);
+        final View root = inflater.inflate(R.layout.fragment_login, container, false);
 
         btnSignIn = (TextView)root.findViewById(R.id.btnSignInLog);
         btnSignIn.setOnClickListener(this);
@@ -73,8 +80,11 @@ public class Login extends Fragment implements  View.OnClickListener{
         // Callback registration
         callbackManager = CallbackManager.Factory.create();
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+
             @Override
             public void onSuccess(LoginResult loginResult) {
+                progressDialog = ProgressDialog.show(getActivity(),"",getActivity().getResources().getString(R.string.loading));
+
                 // App code
                 GraphRequest request = GraphRequest.newMeRequest(
                         loginResult.getAccessToken(),
@@ -84,8 +94,53 @@ public class Login extends Fragment implements  View.OnClickListener{
                                     JSONObject object,
                                     GraphResponse response) {
                                 try {
-                                    String name = object.getString("name");
-                                    name.toString();
+
+                                    facebookName = object.getString("name");
+                                    facebookEmail = object.getString("email");
+                                    ParseUser user = new ParseUser();
+                                    user.setUsername(facebookName);
+                                    user.setPassword("facebookPassword");
+                                    user.setEmail(facebookEmail);
+
+                                    InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                                    imm.hideSoftInputFromWindow(root.getWindowToken(), 0);
+
+                                    user.signUpInBackground(new SignUpCallback() {
+                                        public void done(ParseException e) {
+                                            if (e == null) {
+                                                // Hooray! Let them use the app now.
+                                                progressDialog.dismiss();
+                                                KitchenBookMain kitchenBookMain = new KitchenBookMain();
+                                                Utils.replaceFragment(getFragmentManager(), android.R.id.content, kitchenBookMain, false);
+                                            } else {
+                                                if(e.getCode() == 202){
+                                                    ParseUser.logInInBackground(facebookName, "facebookPassword", new LogInCallback(){
+                                                        public void done(ParseUser user, ParseException e) {
+                                                            if (user != null) {
+                                                                // Hooray! The user is logged in.
+                                                                View view = getActivity().getCurrentFocus();
+                                                                if (view != null) {
+                                                                    InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                                                                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                                                                }
+                                                                progressDialog.dismiss();
+                                                                KitchenBookMain kitchenBookMain = new KitchenBookMain();
+                                                                Utils.replaceFragment(getFragmentManager(), android.R.id.content, kitchenBookMain, false);
+                                                            } else {
+                                                                Utils.showAlert(getActivity(),"Error!", e.getMessage().toString());
+                                                                progressDialog.dismiss();
+
+                                                            }
+                                                        }
+                                                    });
+                                                }else {
+                                                    Utils.showAlert(getActivity(), "Error!", e.getMessage().toString());
+                                                    progressDialog.dismiss();
+
+                                                }
+                                            }
+                                        }
+                                    });
 
                                 }catch (Exception e){
                                     e.printStackTrace();
