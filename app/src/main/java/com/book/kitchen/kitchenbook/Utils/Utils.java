@@ -13,9 +13,13 @@ import android.widget.TextView;
 
 import com.book.kitchen.kitchenbook.KitchenBookActivity;
 import com.book.kitchen.kitchenbook.R;
+import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.RequestPasswordResetCallback;
+
+import java.util.List;
 
 /**
  * Created by serge_000 on 13/11/2015.
@@ -67,6 +71,22 @@ public class Utils {
                                 // get user input and set it to result
                                 // edit text
                                 if (!userInput.getText().toString().equals("")) {
+
+                                    ParseQuery<ParseUser> query = ParseUser.getQuery();
+                                    query.whereEqualTo("email",userInput.getText().toString());
+                                    query.findInBackground(new FindCallback<ParseUser>() {
+                                        @Override
+                                        public void done(List<ParseUser> objects, ParseException e) {
+                                            if(e== null){
+                                                objects.get(0).get("email").toString();
+                                                e.toString();
+                                            }
+                                            else{
+
+                                            }
+                                        }
+                                    });
+
                                     ParseUser.requestPasswordResetInBackground(userInput.getText().toString(),
                                             new RequestPasswordResetCallback() {
                                                 public void done(ParseException e) {
