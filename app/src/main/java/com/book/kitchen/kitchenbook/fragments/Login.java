@@ -1,5 +1,6 @@
 package com.book.kitchen.kitchenbook.fragments;
 
+import android.app.DownloadManager;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
@@ -18,12 +19,18 @@ import com.book.kitchen.kitchenbook.Utils.Utils;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.RequestPasswordResetCallback;
+
+import org.json.JSONObject;
+
+import java.util.Arrays;
 
 /**
  * Created by serge_000 on 13/11/2015.
@@ -58,7 +65,7 @@ public class Login extends Fragment implements  View.OnClickListener{
         btnForgot.setOnClickListener(this);
 
         loginButton = (LoginButton) root.findViewById(R.id.login_button);
-        loginButton.setReadPermissions("user_friends");
+        loginButton.setReadPermissions(Arrays.asList("public_profile", "user_friends","email"));
         // If using in a fragment
         loginButton.setFragment(this);
         // Other app specific specialization
@@ -69,6 +76,23 @@ public class Login extends Fragment implements  View.OnClickListener{
             @Override
             public void onSuccess(LoginResult loginResult) {
                 // App code
+                GraphRequest request = GraphRequest.newMeRequest(
+                        loginResult.getAccessToken(),
+                        new GraphRequest.GraphJSONObjectCallback() {
+                            @Override
+                            public void onCompleted(
+                                    JSONObject object,
+                                    GraphResponse response) {
+
+                           
+                                // Application code
+                            }
+                        });
+                Bundle parameters = new Bundle();
+                parameters.putString("fields", "id,name,link,email");
+                request.setParameters(parameters);
+                request.executeAsync();
+
             }
 
             @Override
@@ -120,5 +144,7 @@ public class Login extends Fragment implements  View.OnClickListener{
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
     }
+
+
 
 }
