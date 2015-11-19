@@ -51,7 +51,8 @@ public class AddRecipe extends Fragment implements View.OnClickListener, Adapter
     TextView buttonGallery;
     TextView btnPost;
     ParseUser currentUser;
-
+    ImageView btnPlus;
+LinearLayout recipeLayout;
     EditText title;
     String titleText;
     EditText description;
@@ -65,10 +66,10 @@ public class AddRecipe extends Fragment implements View.OnClickListener, Adapter
 
     private static final int CAMERA_REQUEST = 1888;
     public static final int ACTIVITY_SELECT_IMAGE = 1889;
-
+    View root;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState ) {
-        View root = inflater.inflate(R.layout.fragment_add_recipe, container, false);
+        root = inflater.inflate(R.layout.fragment_add_recipe, container, false);
         mMainImage = (ImageView)root.findViewById(R.id.mainImage);
         mMainImage.setOnClickListener(this);
 
@@ -91,7 +92,10 @@ public class AddRecipe extends Fragment implements View.OnClickListener, Adapter
 
         currentUser = ParseUser.getCurrentUser();
 
+        btnPlus = (ImageView)root.findViewById(R.id.plusButton);
+        btnPlus.setOnClickListener(this);
 
+        recipeLayout = (LinearLayout)root.findViewById(R.id.recipeLayout);
         spinner = (Spinner)root.findViewById(R.id.spinner);
         spinner.setOnItemSelectedListener(this);
         spinner.setPrompt("Category");
@@ -169,6 +173,10 @@ public class AddRecipe extends Fragment implements View.OnClickListener, Adapter
             imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
         }else if(mIsPublic.getId() == v.getId() && mIsPublic.isChecked()){
             Utils.showAlert(getActivity(),"Alert", "All users will see your recipe!");
+        }else if(btnPlus.getId() == v.getId()){
+            EditText myEditText = new EditText(getActivity()); // Pass it an Activity or Context
+            myEditText.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,160)); // Pass two args; must be LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, or an integer pixel value.
+            recipeLayout.addView(myEditText);
         }
     }
 

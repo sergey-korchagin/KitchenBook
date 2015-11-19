@@ -148,6 +148,13 @@
             android:gravity="right"
             android:id="@+id/textView4" />
 
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:id="@+id/plusButton"
+            android:background="@drawable/plus"
+            android:layout_gravity="right" />
+
 
     </LinearLayout>
 

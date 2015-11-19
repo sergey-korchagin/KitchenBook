@@ -46,20 +46,6 @@ public class SplashScreen extends Fragment {
 
                 ParseUser currentUser = ParseUser.getCurrentUser();
                 if (currentUser != null) {
-//                    ParseObject recipe1 = new ParseObject("recipe");
-//                    recipe1.put("userId",currentUser.getObjectId() );
-//                    recipe1.put("title","Cold water");
-//                    recipe1.put("description", "Get from cooler");
-//                    recipe1.saveInBackground();
-//
-//                    ParseObject recipe2 = new ParseObject("recipe");
-//                    recipe2.put("userId",currentUser.getObjectId() );
-//                    recipe2.put("title","Hot water");
-//                    recipe2.put("description", "Get from teapot");
-//                    recipe2.saveInBackground();
-
-
-
                     // do stuff with the user
                     KitchenBookMain kitchenBookMain = new KitchenBookMain();
                     Utils.replaceFragment(getFragmentManager(), android.R.id.content, kitchenBookMain, false);
