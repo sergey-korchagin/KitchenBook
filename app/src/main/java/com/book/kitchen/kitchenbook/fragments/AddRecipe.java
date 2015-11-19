@@ -52,7 +52,7 @@ public class AddRecipe extends Fragment implements View.OnClickListener, Adapter
     TextView btnPost;
     ParseUser currentUser;
     ImageView btnPlus;
-LinearLayout recipeLayout;
+    LinearLayout recipeLayout;
     EditText title;
     String titleText;
     EditText description;
@@ -61,9 +61,10 @@ LinearLayout recipeLayout;
     CheckBox mIsPublic;
     Spinner spinner;
     int category;
-
+    List<EditText> allEds = new ArrayList<EditText>();
+    int count = 0;
     ProgressDialog progressDialog;
-
+    String[] ingredients;
     private static final int CAMERA_REQUEST = 1888;
     public static final int ACTIVITY_SELECT_IMAGE = 1889;
     View root;
@@ -174,13 +175,34 @@ LinearLayout recipeLayout;
         }else if(mIsPublic.getId() == v.getId() && mIsPublic.isChecked()){
             Utils.showAlert(getActivity(),"Alert", "All users will see your recipe!");
         }else if(btnPlus.getId() == v.getId()){
-            EditText myEditText = new EditText(getActivity()); // Pass it an Activity or Context
-            myEditText.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,160)); // Pass two args; must be LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, or an integer pixel value.
-            recipeLayout.addView(myEditText);
+
+            LinearLayout ln;
+            EditText ed;
+            TextView tv;
+          //  ed = new EditText(getActivity());
+
+               // ed = new LinearLayout(getActivity());
+            ln = (LinearLayout)getActivity().getLayoutInflater().inflate(R.layout.ingredient_row_layout,null);
+            ln.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 120));
+
+//            ed.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT,
+//                    LinearLayout.LayoutParams.WRAP_CONTENT));
+            ed = (EditText)ln.findViewById(R.id.ingrField);
+            allEds.add(ed);
+
+            tv = (TextView)ln.findViewById(R.id.counter);
+            tv.setText(Integer.toString(count+1));
+            count++;
+                recipeLayout.addView(ln);
         }
     }
 
     public boolean getTextFromFields(){
+//        ingredients = new String[allEds.size()];
+//        for(int i=0; i < allEds.size(); i++){
+//            ingredients[i] = allEds.get(i).getText().toString();
+//        }
+//        ingredients[0].toString();
         titleText = title.getText().toString();
         descriptionText = description.getText().toString();
         if(titleText.equals("") && descriptionText.equals("")){
