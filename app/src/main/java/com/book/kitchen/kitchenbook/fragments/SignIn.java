@@ -48,6 +48,8 @@ public class SignIn extends Fragment implements View.OnClickListener {
                 user.setUsername(userName.getText().toString());
                 user.setPassword(userPassword.getText().toString());
                 user.setEmail(userEmail.getText().toString());
+                user.put("fromfacebook",false);
+
 
                 InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(v.getWindowToken(), 0);

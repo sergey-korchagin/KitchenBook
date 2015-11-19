@@ -14,10 +14,13 @@ import android.widget.TextView;
 import com.book.kitchen.kitchenbook.KitchenBookActivity;
 import com.book.kitchen.kitchenbook.R;
 import com.parse.GetCallback;
+import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.RequestPasswordResetCallback;
+
+import java.util.List;
 
 /**
  * Created by serge_000 on 13/11/2015.
@@ -71,19 +74,26 @@ public class Utils {
                                 if (!userInput.getText().toString().equals("")) {
 
 
+                                    ParseQuery<ParseUser> query = ParseUser.getQuery();
+                                    query.whereEqualTo("email", userInput.getText().toString());
+                                    query.findInBackground(new FindCallback<ParseUser>() {
+                                        @Override
+                                        public void done(List<ParseUser> objects, ParseException e) {
+                                            if (e == null) {
+                                                if ((boolean) objects.get(0).get("fromfacebook")) {
+                                                    showAlert(context,"", "User was registered with facebook, please go to facebook to change password!");
+                                                }else {
+                                                    newPassword(userInput.getText().toString(), context);
 
-                                    ParseUser.requestPasswordResetInBackground(userInput.getText().toString(),
-                                            new RequestPasswordResetCallback() {
-                                                public void done(ParseException e) {
-                                                    if (e == null) {
-                                                        // An email was successfully sent with reset instructions.
-                                                        showAlert(context, "Success", "An email was successfully sent with reset instructions");
-                                                    } else {
-                                                        // Something went wrong. Look at the ParseException to see what's up.
-                                                        showAlert(context, "Error!", e.getMessage().toString());
-                                                    }
                                                 }
-                                            });
+
+                                            } else {
+                                                showAlert(context, "Error!", e.getMessage().toString());
+                                            }
+                                        }
+                                    });
+
+
                                 }
                             }
                         });
@@ -94,7 +104,24 @@ public class Utils {
         alertDialog.show();
     }
 
-public static String capitalizeFirstLetter(String capitalizeMe){
+
+    public static void newPassword(String user,final Context context){
+        ParseUser.requestPasswordResetInBackground(user,
+                new RequestPasswordResetCallback() {
+                    public void done(ParseException e) {
+                        if (e == null) {
+                            // An email was successfully sent with reset instructions.
+                            showAlert(context, "Success", "An email was successfully sent with reset instructions");
+                        } else {
+                            // Something went wrong. Look at the ParseException to see what's up.
+                            showAlert(context, "Error!", e.getMessage().toString());
+                        }
+                    }
+                });
+    }
+
+    public static String capitalizeFirstLetter(String capitalizeMe){
+
         return capitalizeMe.substring(0, 1).toUpperCase()+capitalizeMe.substring(1);
     }
 

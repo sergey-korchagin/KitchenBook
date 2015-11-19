@@ -69,6 +69,7 @@ public class MyRecipes extends Fragment implements View.OnClickListener{
        ParseUser currentUser = ParseUser.getCurrentUser();
         ParseQuery query = new ParseQuery("recipe");
         query.whereEqualTo("userId", currentUser.getObjectId());
+        query.addDescendingOrder("createdAt");
         query.findInBackground(new FindCallback() {
             @Override
             public void done(List objects, ParseException e) {

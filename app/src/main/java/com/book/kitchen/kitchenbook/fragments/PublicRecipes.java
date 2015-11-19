@@ -72,6 +72,7 @@ public class PublicRecipes extends Fragment implements AdapterView.OnItemSelecte
 
         ParseQuery query = new ParseQuery("recipe");
         query.whereNotEqualTo("userId", currentUser.getObjectId()).whereEqualTo("public", "public");
+        query.addDescendingOrder("createdAt");
    //     query.whereEqualTo("public","public");
         query.findInBackground(new FindCallback() {
             @Override
