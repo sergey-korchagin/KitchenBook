@@ -36,6 +36,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -147,6 +148,7 @@ public class AddRecipe extends Fragment implements View.OnClickListener, Adapter
                recipe1.put("description", descriptionText);
                recipe1.put("userName",currentUser.get("username"));
                recipe1.put("category", category);
+               recipe1.put("ingredients", Arrays.asList(ingredients));
                if(file!=null) {
                    recipe1.put("mainImage", file);
                }
@@ -198,11 +200,11 @@ public class AddRecipe extends Fragment implements View.OnClickListener, Adapter
     }
 
     public boolean getTextFromFields(){
-//        ingredients = new String[allEds.size()];
-//        for(int i=0; i < allEds.size(); i++){
-//            ingredients[i] = allEds.get(i).getText().toString();
-//        }
-//        ingredients[0].toString();
+        ingredients = new String[allEds.size()];
+        for(int i=0; i < allEds.size(); i++){
+            ingredients[i] = allEds.get(i).getText().toString();
+        }
+
         titleText = title.getText().toString();
         descriptionText = description.getText().toString();
         if(titleText.equals("") && descriptionText.equals("")){

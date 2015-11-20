@@ -26,8 +26,10 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -50,6 +52,7 @@ public class RecipeFullScreen extends Fragment {
     TextView title;
     TextView description;
     ImageView icon;
+    TextView ingredients;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_recipe_full_screen, container, false);
@@ -61,7 +64,16 @@ public class RecipeFullScreen extends Fragment {
         description.setText(parseObject.get("description").toString());
 
         icon = (ImageView) root.findViewById(R.id.largeIcon);
+        ingredients = (TextView)root.findViewById(R.id.ingredientsTv);
 
+        ArrayList<String> ingrArray = (ArrayList<String>)parseObject.get("ingredients");
+
+        String ingrString = "";
+        for (int  i = 0 ; i<ingrArray.size(); i++){
+           ingrString = ingrString + createStringLine(i, ingrArray.get(i).toString());
+        }
+
+         ingredients.setText(ingrString);
 
         if (parseObject.get("mainImage") != null) {
             ParseFile applicantResume = (ParseFile) parseObject.get("mainImage");
@@ -78,6 +90,12 @@ public class RecipeFullScreen extends Fragment {
 
         }
             return root;
+    }
+
+    public String createStringLine(int ind, String l){
+        String line ="";
+        line = (ind+1)+". " + l +"\n";
+        return line;
     }
 
 }
