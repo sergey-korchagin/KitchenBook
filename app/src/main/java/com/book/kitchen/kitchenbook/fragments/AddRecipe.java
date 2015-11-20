@@ -63,11 +63,15 @@ public class AddRecipe extends Fragment implements View.OnClickListener, Adapter
     Spinner spinner;
     int category;
     List<EditText> allEds = new ArrayList<EditText>();
+    List<EditText> allQty = new ArrayList<EditText>();
+    String[] qtyStr;
     int count = 0;
     ProgressDialog progressDialog;
     String[] ingredients;
     private static final int CAMERA_REQUEST = 1888;
     public static final int ACTIVITY_SELECT_IMAGE = 1889;
+    Bitmap photo = null;
+
     View root;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState ) {
@@ -149,12 +153,19 @@ public class AddRecipe extends Fragment implements View.OnClickListener, Adapter
                recipe1.put("userName",currentUser.get("username"));
                recipe1.put("category", category);
                recipe1.put("ingredients", Arrays.asList(ingredients));
+               recipe1.put("quantity", Arrays.asList(qtyStr));
                if(file!=null) {
                    recipe1.put("mainImage", file);
+                   if(photo != null){
+                       photo.recycle();
+//                       photo = null;
+//                       System.gc();
+                   }
+
                }
                if(((CheckBox)mIsPublic).isChecked()){
                    recipe1.put("public","public");
-               }else{
+               } else {
                    recipe1.put("public","private");
 
                }
@@ -181,21 +192,22 @@ public class AddRecipe extends Fragment implements View.OnClickListener, Adapter
             LinearLayout ln;
             EditText ed;
             TextView tv;
-          //  ed = new EditText(getActivity());
+            EditText qty;
 
-               // ed = new LinearLayout(getActivity());
             ln = (LinearLayout)getActivity().getLayoutInflater().inflate(R.layout.ingredient_row_layout,null);
             ln.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 120));
 
-//            ed.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT,
-//                    LinearLayout.LayoutParams.WRAP_CONTENT));
             ed = (EditText)ln.findViewById(R.id.ingrField);
             allEds.add(ed);
+
+            qty = (EditText)ln.findViewById(R.id.qty);
+            allQty.add(qty);
 
             tv = (TextView)ln.findViewById(R.id.counter);
             tv.setText(Integer.toString(count+1));
             count++;
-                recipeLayout.addView(ln);
+
+            recipeLayout.addView(ln);
         }
     }
 
@@ -203,6 +215,10 @@ public class AddRecipe extends Fragment implements View.OnClickListener, Adapter
         ingredients = new String[allEds.size()];
         for(int i=0; i < allEds.size(); i++){
             ingredients[i] = allEds.get(i).getText().toString();
+        }
+        qtyStr = new String [allQty.size()];
+        for(int i=0; i < allQty.size(); i++){
+            qtyStr[i] = allQty.get(i).getText().toString();
         }
 
         titleText = title.getText().toString();
@@ -232,8 +248,8 @@ public class AddRecipe extends Fragment implements View.OnClickListener, Adapter
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (data != null) {
-            Bitmap photo = null;
             if (requestCode == CAMERA_REQUEST) { //&& resultCode == RESULT_OK
+
                 photo = (Bitmap) data.getExtras().get("data");
                 if (Build.MANUFACTURER.equals("LGE")) {  // || (Build.MANUFACTURER.equals("Sony")) || Build.MANUFACTURER.equals("samsung")
                     Matrix matrix = new Matrix();
@@ -243,12 +259,11 @@ public class AddRecipe extends Fragment implements View.OnClickListener, Adapter
                 mMainImage.setImageBitmap(photo);
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
                 // Compress image to lower quality scale 1 - 100
-                photo.compress(Bitmap.CompressFormat.JPEG, 20, stream);
+                photo.compress(Bitmap.CompressFormat.JPEG, 50, stream);
                 byte[] image = stream.toByteArray();
 
                 // Create the ParseFile
                 file  = new ParseFile("picture_1.jpeg", image);
-
             }else if (requestCode == ACTIVITY_SELECT_IMAGE) {
                 Uri bitmapUri = data.getData();
 
@@ -267,7 +282,7 @@ public class AddRecipe extends Fragment implements View.OnClickListener, Adapter
                     mMainImage.setImageBitmap(photo);
                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
                     // Compress image to lower quality scale 1 - 100
-                    photo.compress(Bitmap.CompressFormat.JPEG, 20, stream);
+                    photo.compress(Bitmap.CompressFormat.JPEG, 50, stream);
                     byte[] image = stream.toByteArray();
 
                     // Create the ParseFile
@@ -280,6 +295,7 @@ public class AddRecipe extends Fragment implements View.OnClickListener, Adapter
 
             }
         }
+
     }
     public Bitmap getResizedBitmap(Bitmap bm, int newWidth, int newHeight) {
         int width = bm.getWidth();

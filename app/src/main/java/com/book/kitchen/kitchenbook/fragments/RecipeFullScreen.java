@@ -2,6 +2,7 @@ package com.book.kitchen.kitchenbook.fragments;
 
 import android.annotation.SuppressLint;
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -35,7 +36,7 @@ import java.util.List;
 /**
  * Created by User on 16/11/2015.
  */
-public class RecipeFullScreen extends Fragment {
+public class RecipeFullScreen extends Fragment implements View.OnClickListener{
 
 
     public RecipeFullScreen() {
@@ -47,12 +48,13 @@ public class RecipeFullScreen extends Fragment {
         parseObject = object;
     }
 
-
+    Bitmap bmp;
     ParseObject parseObject;
     TextView title;
     TextView description;
     ImageView icon;
     TextView ingredients;
+    String mTitle;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_recipe_full_screen, container, false);
@@ -60,17 +62,21 @@ public class RecipeFullScreen extends Fragment {
         title = (TextView) root.findViewById(R.id.fullScreenTitle);
         description = (TextView) root.findViewById(R.id.fulScreenDescription);
 
-        title.setText(parseObject.get("title").toString());
+        mTitle = parseObject.get("title").toString();
+        title.setText(mTitle);
         description.setText(parseObject.get("description").toString());
 
         icon = (ImageView) root.findViewById(R.id.largeIcon);
+        icon.setOnClickListener(this);
         ingredients = (TextView)root.findViewById(R.id.ingredientsTv);
 
         ArrayList<String> ingrArray = (ArrayList<String>)parseObject.get("ingredients");
+        ArrayList<String> qtyArray = (ArrayList<String>)parseObject.get("quantity");
+
 
         String ingrString = "";
         for (int  i = 0 ; i<ingrArray.size(); i++){
-           ingrString = ingrString + createStringLine(i, ingrArray.get(i).toString());
+           ingrString = ingrString + createStringLine(i, ingrArray.get(i).toString(), qtyArray.get(i).toString());
         }
 
          ingredients.setText(ingrString);
@@ -80,7 +86,7 @@ public class RecipeFullScreen extends Fragment {
             applicantResume.getDataInBackground(new GetDataCallback() {
                 public void done(byte[] data, ParseException e) {
                     if (e == null) {
-                        Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
+                        bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
                         icon.setImageBitmap(bmp);
                     } else {
                         e.printStackTrace();
@@ -92,10 +98,21 @@ public class RecipeFullScreen extends Fragment {
             return root;
     }
 
-    public String createStringLine(int ind, String l){
+    public String createStringLine(int ind, String l,String q){
         String line ="";
-        line = (ind+1)+". " + l +"\n";
-        return line;
+        line = (ind+1)+". " + l +"  "+ q +"\n";
+        return Utils.capitalizeFirstLetter(line);
     }
 
+    @Override
+    public void onClick(View v) {
+        if(v.getId() == icon.getId()){
+            if(bmp != null) {
+                FullScreenPhoto fullScreenPhoto = new FullScreenPhoto(bmp, mTitle);
+                Utils.replaceFragment(getFragmentManager(), android.R.id.content, fullScreenPhoto, true);
+            }else{
+                Utils.showAlert(getActivity(),"","No picture!");
+            }
+        }
+    }
 }
