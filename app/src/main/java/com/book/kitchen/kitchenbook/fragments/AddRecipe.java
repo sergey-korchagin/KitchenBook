@@ -136,6 +136,7 @@ public class AddRecipe extends Fragment implements View.OnClickListener, Adapter
                 imageClicked = false;
             }
         }else if(v.getId() == buttonCamera.getId()){
+
             Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
             startActivityForResult(cameraIntent, CAMERA_REQUEST);
         }else if(v.getId() == buttonGallery.getId()){
