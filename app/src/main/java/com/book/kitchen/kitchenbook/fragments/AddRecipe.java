@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Point;
 import android.media.ExifInterface;
@@ -30,6 +31,7 @@ import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -47,6 +49,7 @@ import com.parse.ParseObject;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -303,9 +306,13 @@ public class AddRecipe extends Fragment implements View.OnClickListener, Adapter
                 });
         AlertDialog alert = builder.create();
         Window window = alert.getWindow();
-       // window.setBackgroundDrawable();
         window.setGravity(Gravity.CENTER_HORIZONTAL);
+
         alert.show();
+        Button b = alert.getButton(DialogInterface.BUTTON_NEGATIVE);
+        Button a = alert.getButton(DialogInterface.BUTTON_POSITIVE);
+        b.setBackgroundColor((getResources().getColor(R.color.blue)));
+        a.setBackgroundColor((getResources().getColor(R.color.blue)));
     }
 
     public void addIngredientField(){

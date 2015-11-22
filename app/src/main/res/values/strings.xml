@@ -23,5 +23,7 @@
     <string name="recipe_description">Description</string>
     <string name="more_photos">More photos</string>
 
+    <color name="blue">#00BFFF</color>
+
 
 </resources>
