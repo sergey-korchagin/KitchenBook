@@ -59,6 +59,7 @@ public class MyRecipesRecyclerViewAdapter extends RecyclerView.Adapter<MyRecipes
                     if (e == null) {
                         Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
                         holder.icon.setImageBitmap(bmp);
+                        holder.icon.toString();
                     } else {
                         e.printStackTrace();
                     }
