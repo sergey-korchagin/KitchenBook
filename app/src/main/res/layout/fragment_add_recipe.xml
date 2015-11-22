@@ -149,6 +149,7 @@
                 android:layout_height="50dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginLeft="10dp"
+                android:id="@+id/ingrLayout"
                 android:gravity="center_horizontal">
             <TextView
                 android:layout_width="wrap_content"
@@ -168,6 +169,71 @@
                     android:background="@drawable/plus"
                     android:layout_gravity="center|right" />
             </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/ingredientsLay"></LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/recipe_description"
+                android:id="@+id/textView6"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp" />
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:hint="@string/recipe_description"
+                android:id="@+id/long_description"
+                android:gravity="left"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:id="@+id/photoLine"
+                android:layout_height="15dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/no_photo"
+                    android:layout_weight="1"
+                    android:layout_marginRight="2dp"
+                    android:id="@+id/imageView1" />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/no_photo"
+                    android:layout_marginRight="2dp"
+                    android:layout_weight="1"
+                    android:id="@+id/imageView2" />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/no_photo"
+                    android:layout_marginRight="2dp"
+                    android:layout_weight="1"
+                    android:id="@+id/imageView3" />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/no_photo"
+                    android:layout_weight="1"
+                    android:id="@+id/imageView4" />
+            </LinearLayout>
+
 
 
         </LinearLayout>

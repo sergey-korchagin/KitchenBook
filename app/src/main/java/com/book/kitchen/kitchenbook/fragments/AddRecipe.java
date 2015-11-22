@@ -1,14 +1,17 @@
 package com.book.kitchen.kitchenbook.fragments;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.graphics.Point;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
@@ -18,9 +21,12 @@ import android.provider.MediaStore;
 import android.text.format.Time;
 import android.util.Base64;
 import android.util.Log;
+import android.view.Display;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -89,6 +95,13 @@ public class AddRecipe extends Fragment implements View.OnClickListener, Adapter
     private static final int CAMERA_REQUEST = 1888;
     public static final int ACTIVITY_SELECT_IMAGE = 1889;
     Bitmap photo = null;
+    EditText londDescription;
+    boolean isPublic = false;
+    LinearLayout photoLayout;
+    ImageView mImageView1;
+    ImageView mImageView2;
+    ImageView mImageView3;
+    ImageView mImageView4;
 
     View root;
 
@@ -114,12 +127,16 @@ public class AddRecipe extends Fragment implements View.OnClickListener, Adapter
         mIsPublic = (CheckBox)root.findViewById(R.id.isPublic);
         mIsPublic.setOnClickListener(this);
 
+        londDescription = (EditText)root.findViewById(R.id.long_description);
+
+
+
         currentUser = ParseUser.getCurrentUser();
 
         btnPlus = (ImageView)root.findViewById(R.id.plusButton);
         btnPlus.setOnClickListener(this);
 
-        recipeLayout = (LinearLayout)root.findViewById(R.id.recipeLayout);
+        recipeLayout = (LinearLayout)root.findViewById(R.id.ingredientsLay);
         spinner = (Spinner)root.findViewById(R.id.spinner);
         spinner.setOnItemSelectedListener(this);
         spinner.setPrompt("Category");
@@ -131,6 +148,8 @@ public class AddRecipe extends Fragment implements View.OnClickListener, Adapter
         elements.add(getResources().getString(R.string.drinks));
         elements.add(getResources().getString(R.string.soup));
 
+        addIngredientField();
+
         //Создаем для spinner адаптер:
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(),R.layout.support_simple_spinner_dropdown_item,elements);
 
@@ -138,7 +157,25 @@ public class AddRecipe extends Fragment implements View.OnClickListener, Adapter
 
         spinner.setAdapter(dataAdapter);
 
+        photoLayout = (LinearLayout)root.findViewById(R.id.photoLine);
 
+        Display display = getActivity().getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int width = size.x;
+        ViewGroup.LayoutParams params = photoLayout.getLayoutParams();
+
+        params.height = (width/4)-26;
+
+        mImageView1 = (ImageView)root.findViewById(R.id.imageView1);
+        mImageView2 = (ImageView)root.findViewById(R.id.imageView2);
+        mImageView3 = (ImageView)root.findViewById(R.id.imageView3);
+        mImageView4 = (ImageView)root.findViewById(R.id.imageView4);
+
+        mImageView1.setOnClickListener(this);
+        mImageView2.setOnClickListener(this);
+        mImageView3.setOnClickListener(this);
+        mImageView4.setOnClickListener(this);
         return root;
 
     }
@@ -146,18 +183,36 @@ public class AddRecipe extends Fragment implements View.OnClickListener, Adapter
     @Override
     public void onClick(View v) {
         if(v.getId() == mMainImage.getId()){
-            if(!imageClicked){
-                mImageFrom.setVisibility(View.VISIBLE);
-                imageClicked = true;
-            }else{
-                mImageFrom.setVisibility(View.GONE);
-                imageClicked = false;
-            }
+//            if(!imageClicked){
+//                mImageFrom.setVisibility(View.VISIBLE);
+//                imageClicked = true;
+//            }else{
+//                mImageFrom.setVisibility(View.GONE);
+//                imageClicked = false;
+//            }
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setCancelable(true)
+                    .setPositiveButton("Gallery", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent pickPhoto = new Intent(Intent.ACTION_PICK,
+                                    android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                            startActivityForResult(pickPhoto, REQUEST_CODE_FROM_GALLERY_IMAGE);
+                        }
+                    })
+                    .setNegativeButton("Camera", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            onLargeImageCapture(root);
+                        }
+                    });
+            AlertDialog alert = builder.create();
+            Window window = alert.getWindow();
+            window.setGravity(Gravity.TOP);
+            alert.show();
+
         }else if(v.getId() == buttonCamera.getId()){
-
-
-
-            onLargeImageCapture(root);
+             onLargeImageCapture(root);
 
         }else if(v.getId() == buttonGallery.getId()){
             Intent pickPhoto = new Intent(Intent.ACTION_PICK,
@@ -175,6 +230,7 @@ public class AddRecipe extends Fragment implements View.OnClickListener, Adapter
                recipe1.put("category", category);
                recipe1.put("ingredients", Arrays.asList(ingredients));
                recipe1.put("quantity", Arrays.asList(qtyStr));
+               recipe1.put("longDescription",londDescription.getText().toString());
                if(file!=null) {
                    recipe1.put("mainImage", file);
                    if(photo != null){
@@ -206,30 +262,72 @@ public class AddRecipe extends Fragment implements View.OnClickListener, Adapter
            }
             InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-        }else if(mIsPublic.getId() == v.getId() && mIsPublic.isChecked()){
-            Utils.showAlert(getActivity(),"Alert", "All users will see your recipe!");
+        }else if(mIsPublic.getId() == v.getId()){
+            if( mIsPublic.isChecked()){
+                Utils.showAlert(getActivity(),"Alert", "All users will see your recipe! Need to fill all fields");
+                isPublic = true;
+            }else{
+                isPublic = false;
+            }
+
         }else if(btnPlus.getId() == v.getId()){
 
-            LinearLayout ln;
-            EditText ed;
-            TextView tv;
-            EditText qty;
-
-            ln = (LinearLayout)getActivity().getLayoutInflater().inflate(R.layout.ingredient_row_layout,null);
-            ln.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 120));
-
-            ed = (EditText)ln.findViewById(R.id.ingrField);
-            allEds.add(ed);
-
-            qty = (EditText)ln.findViewById(R.id.qty);
-            allQty.add(qty);
-
-            tv = (TextView)ln.findViewById(R.id.counter);
-            tv.setText(Integer.toString(count+1));
-            count++;
-
-            recipeLayout.addView(ln);
+            addIngredientField();
         }
+        //Adding Images
+        else if(mImageView1.getId()  == v.getId()){
+            takeImageDialog(1);
+        }else if(mImageView2.getId()  == v.getId()){
+            takeImageDialog(2);
+        }else if(mImageView3.getId()  == v.getId()){
+            takeImageDialog(3);
+        }else if(mImageView4.getId()  == v.getId()){
+            takeImageDialog(4);
+        }
+    }
+
+    public void takeImageDialog(int imageId){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setCancelable(true)
+                .setPositiveButton("Gallery", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                })
+                .setNegativeButton("Camera", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+        AlertDialog alert = builder.create();
+        Window window = alert.getWindow();
+       // window.setBackgroundDrawable();
+        window.setGravity(Gravity.CENTER_HORIZONTAL);
+        alert.show();
+    }
+
+    public void addIngredientField(){
+        LinearLayout ln;
+        EditText ed;
+        TextView tv;
+        EditText qty;
+
+        ln = (LinearLayout)getActivity().getLayoutInflater().inflate(R.layout.ingredient_row_layout,null);
+        ln.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 120));
+
+        ed = (EditText)ln.findViewById(R.id.ingrField);
+        allEds.add(ed);
+
+        qty = (EditText)ln.findViewById(R.id.qty);
+        allQty.add(qty);
+
+        tv = (TextView)ln.findViewById(R.id.counter);
+        tv.setText(Integer.toString(count+1));
+        count++;
+
+        recipeLayout.addView(ln);
     }
 
     public boolean getTextFromFields(){
@@ -275,7 +373,6 @@ public class AddRecipe extends Fragment implements View.OnClickListener, Adapter
         Matrix matrix = new Matrix();
         // RESIZE THE BIT MAP
         matrix.postScale(scaleWidth, scaleHeight);
-
         // "RECREATE" THE NEW BITMAP
         Bitmap resizedBitmap = Bitmap.createBitmap(
                 bm, 0, 0, width, height, matrix, false);
@@ -287,6 +384,7 @@ public class AddRecipe extends Fragment implements View.OnClickListener, Adapter
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         if(position!=0) {
             spinner.setSelected(true);
+
             category = position;
         }
     }

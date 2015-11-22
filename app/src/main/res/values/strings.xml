@@ -15,11 +15,13 @@
     <string name="soup">Soup</string>
     <string name="public_recipes">Public recipes</string>
     <string name="my_recipes">My recipes</string>
-    <string name="settings_my">Sellings</string>
+    <string name="settings_my">Settings</string>
     <string name="no_internet">No internet - no recipes!</string>
     <string name="loading">Loading...</string>
     <string name="facebook_app_id">202684253397380</string>
     <string name="ingredients">Ingredients</string>
+    <string name="recipe_description">Description</string>
+    <string name="more_photos">More photos</string>
 
 
 </resources>

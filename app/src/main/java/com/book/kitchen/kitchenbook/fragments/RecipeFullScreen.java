@@ -5,12 +5,15 @@ import android.app.Fragment;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Point;
 import android.os.Bundle;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.book.kitchen.kitchenbook.R;
@@ -55,6 +58,9 @@ public class RecipeFullScreen extends Fragment implements View.OnClickListener{
     ImageView icon;
     TextView ingredients;
     String mTitle;
+    TextView longDescription;
+    LinearLayout photoLayout;
+
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_recipe_full_screen, container, false);
@@ -95,6 +101,22 @@ public class RecipeFullScreen extends Fragment implements View.OnClickListener{
             });
 
         }
+
+        longDescription = (TextView)root.findViewById(R.id.lDescription);
+        longDescription.setText(Utils.capitalizeFirstLetter(parseObject.get("longDescription").toString()));
+
+        photoLayout = (LinearLayout)root.findViewById(R.id.photoLine);
+
+        Display display = getActivity().getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int width = size.x;
+       ViewGroup.LayoutParams params = photoLayout.getLayoutParams();
+
+        params.height = (width/4)-26;
+
+
+
             return root;
     }
 
