@@ -81,6 +81,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             description = (TextView)itemView.findViewById(R.id.tmpTv);
             title= (TextView)itemView.findViewById(R.id.cardTitle);
             icon = (ImageView)itemView.findViewById(R.id.itemIcon);
+            icon.setOnClickListener(this);
             userName = (TextView)itemView.findViewById(R.id.cardUserName);
             description.setOnClickListener(this);
             category = (TextView)itemView.findViewById(R.id.card_category);
@@ -90,7 +91,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         @Override
         public void onClick(View v) {
-            if(v.getId() == description.getId()) {
+            if(v.getId() == description.getId()|| v.getId() == icon.getId()) {
                 onItemClickListener.onCardClickListener(mList.get(getAdapterPosition()));
             }
         }

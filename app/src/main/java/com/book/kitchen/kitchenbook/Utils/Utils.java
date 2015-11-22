@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.book.kitchen.kitchenbook.KitchenBookActivity;
 import com.book.kitchen.kitchenbook.R;
+import com.parse.GetCallback;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
@@ -72,6 +73,7 @@ public class Utils {
                                 // edit text
                                 if (!userInput.getText().toString().equals("")) {
 
+
                                     ParseQuery<ParseUser> query = ParseUser.getQuery();
                                     query.whereEqualTo("email", userInput.getText().toString());
                                     query.findInBackground(new FindCallback<ParseUser>() {
@@ -82,6 +84,7 @@ public class Utils {
                                                     showAlert(context,"", "User was registered with facebook, please go to facebook to change password!");
                                                 }else {
                                                     newPassword(userInput.getText().toString(), context);
+
                                                 }
 
                                             } else {
@@ -101,6 +104,7 @@ public class Utils {
         alertDialog.show();
     }
 
+
     public static void newPassword(String user,final Context context){
         ParseUser.requestPasswordResetInBackground(user,
                 new RequestPasswordResetCallback() {
@@ -117,6 +121,7 @@ public class Utils {
     }
 
     public static String capitalizeFirstLetter(String capitalizeMe){
+
         return capitalizeMe.substring(0, 1).toUpperCase()+capitalizeMe.substring(1);
     }
 
