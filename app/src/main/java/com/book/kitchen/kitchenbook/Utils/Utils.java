@@ -121,8 +121,10 @@ public class Utils {
     }
 
     public static String capitalizeFirstLetter(String capitalizeMe){
-
-        return capitalizeMe.substring(0, 1).toUpperCase()+capitalizeMe.substring(1);
+        if(!capitalizeMe.equals("") && capitalizeMe!=null) {
+            capitalizeMe =  capitalizeMe.substring(0, 1).toUpperCase() + capitalizeMe.substring(1);
+        }
+        return capitalizeMe;
     }
 
 

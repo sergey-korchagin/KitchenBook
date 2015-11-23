@@ -13,12 +13,15 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Point;
+import android.graphics.drawable.Drawable;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.text.format.Time;
 import android.util.Base64;
 import android.util.Log;
@@ -107,7 +110,7 @@ public class AddRecipe extends Fragment implements View.OnClickListener, Adapter
     ImageView mImageView4;
     ImageView deleteRow;
     LinearLayout ln;
-
+    Drawable originalDrawable;
     View root;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState ) {
@@ -127,6 +130,7 @@ public class AddRecipe extends Fragment implements View.OnClickListener, Adapter
         btnPost.setOnClickListener(this);
 
         title = (EditText)root.findViewById(R.id.recipe_title);
+        originalDrawable = title.getBackground();
         description = (EditText)root.findViewById(R.id.recipe_description);
 
         mIsPublic = (CheckBox)root.findViewById(R.id.isPublic);
@@ -325,9 +329,9 @@ public class AddRecipe extends Fragment implements View.OnClickListener, Adapter
     }
 
     public void addIngredientField(){
-        EditText ed;
-        TextView tv;
-        EditText qty;
+       final EditText ed;
+      //  TextView tv;
+        final EditText qty;
         ImageView btn;
 
 
@@ -339,8 +343,14 @@ public class AddRecipe extends Fragment implements View.OnClickListener, Adapter
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                for(int i=0; i < allEds.size(); i++){
+                for (int i = 0; i < allEds.size(); i++) {
                     //find cell by tag
+                    if (allEds.get(i).getTag().toString().equals(((View) v.getParent()).getTag().toString())) {
+                        allEds.remove(i);
+                    }
+                    if (allQty.get(i).getTag().toString().equals(((View) v.getParent()).getTag().toString())) {
+                        allQty.remove(i);
+                    }
                 }
                 recipeLayout.removeView((View) v.getParent());
             }
@@ -350,12 +360,29 @@ public class AddRecipe extends Fragment implements View.OnClickListener, Adapter
         ed.setTag("ingr" + Integer.toString(count));
         allEds.add(ed);
 
+        ed.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {ed.setBackground(originalDrawable);}
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
+        
         qty = (EditText)ln.findViewById(R.id.qty);
         qty.setTag("ingr" + Integer.toString(count));
         allQty.add(qty);
 
-        tv = (TextView)ln.findViewById(R.id.counter);
-        tv.setText(Integer.toString(count + 1));
+        qty.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {qty.setBackground(originalDrawable);}
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
         count++;
 
         recipeLayout.addView(ln);
@@ -370,6 +397,9 @@ public class AddRecipe extends Fragment implements View.OnClickListener, Adapter
         for(int i=0; i < allQty.size(); i++){
             qtyStr[i] = allQty.get(i).getText().toString();
         }
+
+
+
 
         titleText = title.getText().toString();
         descriptionText = description.getText().toString();
@@ -390,6 +420,24 @@ public class AddRecipe extends Fragment implements View.OnClickListener, Adapter
         }
         if(!titleText.equals("")){
             titleText = titleText.substring(0, 1).toUpperCase()+titleText.substring(1);
+        }
+
+        for (int i = 0; i<ingredients.length;i++){
+            if(ingredients[i].equals("") && qtyStr[i].equals("")){
+                Utils.showAlert(getActivity(),"Error!", "Empty ingredient field and quantity");
+                ( allEds.get(i)).setBackground(getResources().getDrawable(R.drawable.red_border));
+                ( allQty.get(i)).setBackground(getResources().getDrawable(R.drawable.red_border));
+                return false;
+            }else if(ingredients[i].equals("") && !qtyStr[i].equals("")){
+                Utils.showAlert(getActivity(),"Error!", "Empty ingredient field");
+                (allEds.get(i)).setBackground(getResources().getDrawable(R.drawable.red_border));
+
+                return false;
+            }else if(!ingredients[i].equals("") && qtyStr[i].equals("")){
+                Utils.showAlert(getActivity(),"Error!", "Empty quantity field");
+                (allQty.get(i)).setBackground(getResources().getDrawable(R.drawable.red_border));
+                return false;
+            }
         }
         return true;
     }

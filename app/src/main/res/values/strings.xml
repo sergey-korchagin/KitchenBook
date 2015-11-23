@@ -24,6 +24,8 @@
     <string name="more_photos">More photos</string>
 
     <color name="blue">#00BFFF</color>
+    <color name="red">#F7D9D9</color>
+    <color name="white">#FFFFFF</color>
 
 
 </resources>
