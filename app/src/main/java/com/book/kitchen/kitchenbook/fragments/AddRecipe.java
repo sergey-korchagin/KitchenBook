@@ -328,9 +328,20 @@ public class AddRecipe extends Fragment implements View.OnClickListener, Adapter
         EditText ed;
         TextView tv;
         EditText qty;
+        ImageView btn;
+
+
 
         ln = (LinearLayout)getActivity().getLayoutInflater().inflate(R.layout.ingredient_row_layout,null);
         ln.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 120));
+
+        btn = (ImageView)ln.findViewById(R.id.removeIngRow);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                recipeLayout.removeView((View)v.getParent());
+            }
+        });
 
         ed = (EditText)ln.findViewById(R.id.ingrField);
         allEds.add(ed);
