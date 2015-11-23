@@ -618,6 +618,9 @@ public class AddRecipe extends Fragment implements View.OnClickListener, Adapter
                         case 1:
                             file1  = new ParseFile("picture_2.jpeg", image);
                             break;
+                        case 2:
+
+                            break;
 
                     }
                     Constants.PHOTO_ID = -1;
