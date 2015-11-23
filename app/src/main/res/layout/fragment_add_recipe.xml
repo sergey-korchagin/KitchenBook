@@ -210,6 +210,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/no_photo"
                     android:layout_weight="1"
+                    android:scaleType="centerCrop"
                     android:layout_marginRight="2dp"
                     android:id="@+id/imageView1" />
                 <ImageView
@@ -218,12 +219,14 @@
                     android:background="@drawable/no_photo"
                     android:layout_marginRight="2dp"
                     android:layout_weight="1"
+                    android:scaleType="centerCrop"
                     android:id="@+id/imageView2" />
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/no_photo"
                     android:layout_marginRight="2dp"
+                    android:scaleType="centerCrop"
                     android:layout_weight="1"
                     android:id="@+id/imageView3" />
                 <ImageView
@@ -231,6 +234,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/no_photo"
                     android:layout_weight="1"
+                    android:scaleType="centerCrop"
                     android:id="@+id/imageView4" />
             </LinearLayout>
 

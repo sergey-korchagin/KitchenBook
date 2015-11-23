@@ -60,6 +60,11 @@ public class RecipeFullScreen extends Fragment implements View.OnClickListener{
     String mTitle;
     TextView longDescription;
     LinearLayout photoLayout;
+    ImageView mImage1;
+    ImageView mImage2;
+    ImageView mImage3;
+    ImageView mImage4;
+
 
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -101,6 +106,20 @@ public class RecipeFullScreen extends Fragment implements View.OnClickListener{
             });
 
         }
+        if (parseObject.get("image1") != null) {
+            ParseFile applicantResume = (ParseFile) parseObject.get("mainImage");
+            applicantResume.getDataInBackground(new GetDataCallback() {
+                public void done(byte[] data, ParseException e) {
+                    if (e == null) {
+                        bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
+                        mImage1.setImageBitmap(bmp);
+                    } else {
+                        e.printStackTrace();
+                    }
+                }
+            });
+
+        }
 
         longDescription = (TextView)root.findViewById(R.id.lDescription);
         longDescription.setText(Utils.capitalizeFirstLetter(parseObject.get("longDescription").toString()));
@@ -114,6 +133,7 @@ public class RecipeFullScreen extends Fragment implements View.OnClickListener{
        ViewGroup.LayoutParams params = photoLayout.getLayoutParams();
 
         params.height = (width/4)-26;
+        mImage1 = (ImageView)root.findViewById(R.id.imageView);
 
 
 

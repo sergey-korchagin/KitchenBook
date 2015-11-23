@@ -45,6 +45,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.book.kitchen.kitchenbook.R;
+import com.book.kitchen.kitchenbook.Utils.Constants;
 import com.book.kitchen.kitchenbook.Utils.Utils;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -61,6 +62,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.zip.CheckedOutputStream;
 
 /**
  * Created by User on 15/11/2015.
@@ -89,6 +91,7 @@ public class AddRecipe extends Fragment implements View.OnClickListener, Adapter
     EditText description;
     String descriptionText;
     ParseFile file;
+    ParseFile file1;
     CheckBox mIsPublic;
     Spinner spinner;
     int category;
@@ -209,13 +212,14 @@ public class AddRecipe extends Fragment implements View.OnClickListener, Adapter
                         public void onClick(DialogInterface dialog, int which) {
                             Intent pickPhoto = new Intent(Intent.ACTION_PICK,
                                     android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                            Constants.PHOTO_ID = 0;
                             startActivityForResult(pickPhoto, REQUEST_CODE_FROM_GALLERY_IMAGE);
                         }
                     })
                     .setNegativeButton("Camera", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            onLargeImageCapture(root);
+                            onLargeImageCapture(root,0);
                         }
                     });
             AlertDialog alert = builder.create();
@@ -225,11 +229,12 @@ public class AddRecipe extends Fragment implements View.OnClickListener, Adapter
 
         }else if(v.getId() == buttonCamera.getId()){
 
-             onLargeImageCapture(root);
+             onLargeImageCapture(root,0);
 
         }else if(v.getId() == buttonGallery.getId()){
             Intent pickPhoto = new Intent(Intent.ACTION_PICK,
                     android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            Constants.PHOTO_ID = 0;
             startActivityForResult(pickPhoto, REQUEST_CODE_FROM_GALLERY_IMAGE);
         }else if(btnPost.getId() == v.getId()){
 
@@ -250,6 +255,9 @@ public class AddRecipe extends Fragment implements View.OnClickListener, Adapter
    //                    photo.recycle();
 //                       photo = null;
 //                       System.gc();
+                   }
+                   if(file1!=null){
+                       recipe1.put("image1", file1);
                    }
 
                }
@@ -302,18 +310,22 @@ public class AddRecipe extends Fragment implements View.OnClickListener, Adapter
         }
     }
 
-    public void takeImageDialog(int imageId){
+    public void takeImageDialog(final int imageId){
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setCancelable(true)
                 .setPositiveButton("Gallery", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
+                        Intent pickPhoto = new Intent(Intent.ACTION_PICK,
+                                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                       Constants.PHOTO_ID = imageId;
+                        startActivityForResult(pickPhoto, REQUEST_CODE_FROM_GALLERY_IMAGE);
                     }
                 })
                 .setNegativeButton("Camera", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        onLargeImageCapture(root,imageId);
 
                     }
                 });
@@ -369,7 +381,7 @@ public class AddRecipe extends Fragment implements View.OnClickListener, Adapter
             public void afterTextChanged(Editable s) {}
         });
 
-        
+
         qty = (EditText)ln.findViewById(R.id.qty);
         qty.setTag("ingr" + Integer.toString(count));
         allQty.add(qty);
@@ -429,12 +441,12 @@ public class AddRecipe extends Fragment implements View.OnClickListener, Adapter
                 ( allQty.get(i)).setBackground(getResources().getDrawable(R.drawable.red_border));
                 return false;
             }else if(ingredients[i].equals("") && !qtyStr[i].equals("")){
-                Utils.showAlert(getActivity(),"Error!", "Empty ingredient field");
+                Utils.showAlert(getActivity(), "Error!", "Empty ingredient field");
                 (allEds.get(i)).setBackground(getResources().getDrawable(R.drawable.red_border));
 
                 return false;
             }else if(!ingredients[i].equals("") && qtyStr[i].equals("")){
-                Utils.showAlert(getActivity(),"Error!", "Empty quantity field");
+                Utils.showAlert(getActivity(), "Error!", "Empty quantity field");
                 (allQty.get(i)).setBackground(getResources().getDrawable(R.drawable.red_border));
                 return false;
             }
@@ -578,15 +590,37 @@ public class AddRecipe extends Fragment implements View.OnClickListener, Adapter
                         tmpWidth = photo.getWidth()/ratio;
                         photo = getResizedBitmap(photo, (int)tmpWidth, (int)tmpHeight);
                     }
-                    mMainImage.setImageBitmap(photo);
+
+
+
+                    switch (Constants.PHOTO_ID) {
+                        case 0:
+                            mMainImage.setImageBitmap(photo);
+                            break;
+                        case 1:
+                            mImageView1.setImageBitmap(photo);
+                            break;
+
+                    }
                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
 
                     //    Compress image to lower quality scale 1 - 100
                     photo.compress(Bitmap.CompressFormat.JPEG, 20, stream);
                     byte[] image = stream.toByteArray();
 
-                    // Create the ParseFile
-                   file  = new ParseFile("picture_1.jpeg", image);
+
+
+                    switch (Constants.PHOTO_ID){
+                        case 0:
+                            // Create the ParseFile
+                            file  = new ParseFile("picture_1.jpeg", image);
+                            break;
+                        case 1:
+                            file1  = new ParseFile("picture_2.jpeg", image);
+                            break;
+
+                    }
+                    Constants.PHOTO_ID = -1;
 
 
                 }
@@ -596,11 +630,12 @@ public class AddRecipe extends Fragment implements View.OnClickListener, Adapter
         }
     }
 
-    public void onLargeImageCapture(View v) {
+    public void onLargeImageCapture(View v, int photoId) {
 
         mHighQualityImageUri = generateTimeStampPhotoFileUri();
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, mHighQualityImageUri);
+        Constants.PHOTO_ID = photoId;
         startActivityForResult(intent, REQUEST_CODE_HIGH_QUALITY_IMAGE);
 
     }

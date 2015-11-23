@@ -5,4 +5,6 @@ package com.book.kitchen.kitchenbook.Utils;
  */
 public class Constants {
     public static String CURRENT_OBJECT = "current_object";
+    public static int PHOTO_ID = -1;
+
 }
