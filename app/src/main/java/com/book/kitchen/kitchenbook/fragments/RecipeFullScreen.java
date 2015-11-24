@@ -16,11 +16,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.book.kitchen.kitchenbook.R;
 import com.book.kitchen.kitchenbook.Utils.Constants;
 import com.book.kitchen.kitchenbook.Utils.Utils;
 import com.book.kitchen.kitchenbook.adapters.RecyclerViewAdapter;
 import com.book.kitchen.kitchenbook.managers.SharedManager;
+import com.book.kitchen.kitchenbook.managers.VolleyManager;
 import com.google.gson.Gson;
 import com.parse.FindCallback;
 import com.parse.GetDataCallback;
@@ -69,6 +72,7 @@ public class RecipeFullScreen extends Fragment implements View.OnClickListener{
     ImageView mImage2;
     ImageView mImage3;
     ImageView mImage4;
+    VolleyManager volleyManager;
 
 
 
@@ -88,6 +92,8 @@ public class RecipeFullScreen extends Fragment implements View.OnClickListener{
 
         ArrayList<String> ingrArray = (ArrayList<String>)parseObject.get("ingredients");
         ArrayList<String> qtyArray = (ArrayList<String>)parseObject.get("quantity");
+
+        volleyManager = VolleyManager.getInstance();
 
 
         String ingrString = "";
@@ -109,16 +115,19 @@ public class RecipeFullScreen extends Fragment implements View.OnClickListener{
 
         if (parseObject.get("mainImage") != null) {
             ParseFile applicantResume = (ParseFile) parseObject.get("mainImage");
-            applicantResume.getDataInBackground(new GetDataCallback() {
-                public void done(byte[] data, ParseException e) {
-                    if (e == null) {
-                        bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
-                        icon.setImageBitmap(bmp);
-                    } else {
-                        e.printStackTrace();
-                    }
+            volleyManager.addToRequestQueue(volleyManager.createImageRequest(applicantResume.getUrl(), new Response.Listener<Bitmap>() {
+                @Override
+                public void onResponse(Bitmap response) {
+                    icon.setImageBitmap(response);
+                    bmp = response;
                 }
-            });
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    error.printStackTrace();
+                error.toString();
+                }
+            }));
 
         }
         if (parseObject.get("image1") != null) {
