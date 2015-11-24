@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.android.volley.Response;
@@ -54,6 +55,7 @@ public class RecipeFullScreen extends Fragment implements View.OnClickListener{
         parseObject = object;
     }
 
+    int nullCounter = 0;
     Bitmap bmp;
     Bitmap bmp1;
     Bitmap bmp2;
@@ -73,18 +75,28 @@ public class RecipeFullScreen extends Fragment implements View.OnClickListener{
     ImageView mImage3;
     ImageView mImage4;
     VolleyManager volleyManager;
+    ProgressBar progressBar1;
+    ProgressBar progressBar2;
+    ProgressBar progressBar3;
+    ProgressBar progressBar4;
 
-
+    TextView morePhotos;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_recipe_full_screen, container, false);
 
+        progressBar1 = (ProgressBar)root.findViewById(R.id.p1);
+        progressBar2 = (ProgressBar)root.findViewById(R.id.p2);
+        progressBar3 = (ProgressBar)root.findViewById(R.id.p3);
+        progressBar4 = (ProgressBar)root.findViewById(R.id.p4);
+
+        morePhotos = (TextView)root.findViewById(R.id.photosText);
         title = (TextView) root.findViewById(R.id.fullScreenTitle);
         description = (TextView) root.findViewById(R.id.fulScreenDescription);
 
         mTitle = parseObject.get("title").toString();
         title.setText(mTitle);
-        description.setText(parseObject.get("description").toString());
+        description.setText(Utils.capitalizeFirstLetter(parseObject.get("description").toString()));
 
         icon = (ImageView) root.findViewById(R.id.largeIcon);
         icon.setOnClickListener(this);
@@ -111,85 +123,7 @@ public class RecipeFullScreen extends Fragment implements View.OnClickListener{
         mImage4 = (ImageView)root.findViewById(R.id.imageView4);
         mImage4.setOnClickListener(this);
 
-
-
-        if (parseObject.get("mainImage") != null) {
-            ParseFile applicantResume = (ParseFile) parseObject.get("mainImage");
-            volleyManager.addToRequestQueue(volleyManager.createImageRequest(applicantResume.getUrl(), new Response.Listener<Bitmap>() {
-                @Override
-                public void onResponse(Bitmap response) {
-                    icon.setImageBitmap(response);
-                    bmp = response;
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    error.printStackTrace();
-                error.toString();
-                }
-            }));
-
-        }
-        if (parseObject.get("image1") != null) {
-            ParseFile applicantResume = (ParseFile) parseObject.get("image1");
-            applicantResume.getDataInBackground(new GetDataCallback() {
-                public void done(byte[] data, ParseException e) {
-                    if (e == null) {
-                        bmp1 = BitmapFactory.decodeByteArray(data, 0, data.length);
-                        mImage1.setImageBitmap(bmp1);
-                    } else {
-                        e.printStackTrace();
-                    }
-                }
-            });
-        }else{
-            mImage1.setVisibility(View.INVISIBLE);
-        }
-        if (parseObject.get("image2") != null) {
-            ParseFile applicantResume = (ParseFile) parseObject.get("image2");
-            applicantResume.getDataInBackground(new GetDataCallback() {
-                public void done(byte[] data, ParseException e) {
-                    if (e == null) {
-                        bmp2 = BitmapFactory.decodeByteArray(data, 0, data.length);
-                        mImage2.setImageBitmap(bmp2);
-                    } else {
-                        e.printStackTrace();
-                    }
-                }
-            });
-        }else{
-            mImage2.setVisibility(View.INVISIBLE);
-        }
-        if (parseObject.get("image3") != null) {
-            ParseFile applicantResume = (ParseFile) parseObject.get("image3");
-            applicantResume.getDataInBackground(new GetDataCallback() {
-                public void done(byte[] data, ParseException e) {
-                    if (e == null) {
-                        bmp3 = BitmapFactory.decodeByteArray(data, 0, data.length);
-                        mImage3.setImageBitmap(bmp3);
-                    } else {
-                        e.printStackTrace();
-                    }
-                }
-            });
-        }else{
-            mImage3.setVisibility(View.INVISIBLE);
-        }
-        if (parseObject.get("image4") != null) {
-            ParseFile applicantResume = (ParseFile) parseObject.get("image4");
-            applicantResume.getDataInBackground(new GetDataCallback() {
-                public void done(byte[] data, ParseException e) {
-                    if (e == null) {
-                        bmp4 = BitmapFactory.decodeByteArray(data, 0, data.length);
-                        mImage4.setImageBitmap(bmp4);
-                    } else {
-                        e.printStackTrace();
-                    }
-                }
-            });
-        }else{
-            mImage4.setVisibility(View.INVISIBLE);
-        }
+        fillPhotos();
 
         longDescription = (TextView)root.findViewById(R.id.lDescription);
         longDescription.setText(Utils.capitalizeFirstLetter(parseObject.get("longDescription").toString()));
@@ -203,13 +137,122 @@ public class RecipeFullScreen extends Fragment implements View.OnClickListener{
         ViewGroup.LayoutParams params = photoLayout.getLayoutParams();
         params.height = (width/4)-26;
 
+
             return root;
+    }
+
+    public void fillPhotos(){
+        if (parseObject.get("mainImage") != null) {
+            ParseFile applicantResume = (ParseFile) parseObject.get("mainImage");
+            volleyManager.addToRequestQueue(volleyManager.createImageRequest(applicantResume.getUrl(), new Response.Listener<Bitmap>() {
+                @Override
+                public void onResponse(Bitmap response) {
+                    icon.setImageBitmap(response);
+                    bmp = response;
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    error.printStackTrace();
+                    error.toString();
+                }
+            }));
+
+        }else{
+            icon.setImageDrawable(getResources().getDrawable(R.drawable.no_photo));
+        }
+        if (parseObject.get("image1") != null) {
+            ParseFile applicantResume = (ParseFile) parseObject.get("image1");
+            volleyManager.addToRequestQueue(volleyManager.createImageRequest(applicantResume.getUrl(), new Response.Listener<Bitmap>() {
+                @Override
+                public void onResponse(Bitmap response) {
+
+                    mImage1.setImageBitmap(response);
+                    bmp1 = response;
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    error.printStackTrace();
+                    error.toString();
+                }
+            }));
+        }else{
+            mImage1.setVisibility(View.INVISIBLE);
+            progressBar1.setVisibility(View.INVISIBLE);
+            nullCounter++;
+        }
+        if (parseObject.get("image2") != null) {
+            ParseFile applicantResume = (ParseFile) parseObject.get("image2");
+            volleyManager.addToRequestQueue(volleyManager.createImageRequest(applicantResume.getUrl(), new Response.Listener<Bitmap>() {
+                @Override
+                public void onResponse(Bitmap response) {
+                    mImage2.setImageBitmap(response);
+                    bmp2 = response;
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    error.printStackTrace();
+                    error.toString();
+                }
+            }));
+        }else{
+            mImage2.setVisibility(View.INVISIBLE);
+            progressBar2.setVisibility(View.INVISIBLE);
+            nullCounter++;
+        }
+        if (parseObject.get("image3") != null) {
+            ParseFile applicantResume = (ParseFile) parseObject.get("image3");
+            volleyManager.addToRequestQueue(volleyManager.createImageRequest(applicantResume.getUrl(), new Response.Listener<Bitmap>() {
+                @Override
+                public void onResponse(Bitmap response) {
+                    mImage3.setImageBitmap(response);
+                    bmp3 = response;
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    error.printStackTrace();
+                    error.toString();
+                }
+            }));
+        }else{
+            mImage3.setVisibility(View.INVISIBLE);
+            progressBar3.setVisibility(View.INVISIBLE);
+            nullCounter++;
+        }
+        if (parseObject.get("image4") != null) {
+            ParseFile applicantResume = (ParseFile) parseObject.get("image4");
+            volleyManager.addToRequestQueue(volleyManager.createImageRequest(applicantResume.getUrl(), new Response.Listener<Bitmap>() {
+                @Override
+                public void onResponse(Bitmap response) {
+                    mImage4.setImageBitmap(response);
+                    bmp4 = response;
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    error.printStackTrace();
+                    error.toString();
+                }
+            }));
+        }else{
+            mImage4.setVisibility(View.INVISIBLE);
+            progressBar4.setVisibility(View.INVISIBLE);
+            nullCounter++;
+        }
+
+        if(nullCounter == 4){
+            morePhotos.setVisibility(View.GONE);
+            nullCounter = 0;
+        }
     }
 
     public String createStringLine(int ind, String l,String q){
         String line ="";
-        line = (ind+1)+". " + l +"  "+ q +"\n";
-        return Utils.capitalizeFirstLetter(line);
+        line = (ind+1)+". " + Utils.capitalizeFirstLetter(l) +"  "+ Utils.capitalizeFirstLetter(q) +"\n";
+        return line;
     }
 
     @Override

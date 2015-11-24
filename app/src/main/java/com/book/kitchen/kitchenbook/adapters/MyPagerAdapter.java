@@ -30,7 +30,7 @@ public class MyPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return 3;
+        return 4;
     }
 
 
@@ -39,6 +39,9 @@ public class MyPagerAdapter extends FragmentPagerAdapter {
         if(position == 1){
             return mContext.getResources().getString(R.string.my_recipes);
         }else if(position==2){
+            return mContext.getResources().getString(R.string.bookmarks);
+        }else if(position == 3){
+
             return mContext.getResources().getString(R.string.settings_my);
         }
         return mContext.getResources().getString(R.string.public_recipes);
