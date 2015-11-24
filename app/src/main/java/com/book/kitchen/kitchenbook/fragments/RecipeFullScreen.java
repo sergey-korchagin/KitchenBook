@@ -52,6 +52,11 @@ public class RecipeFullScreen extends Fragment implements View.OnClickListener{
     }
 
     Bitmap bmp;
+    Bitmap bmp1;
+    Bitmap bmp2;
+    Bitmap bmp3;
+    Bitmap bmp4;
+
     ParseObject parseObject;
     TextView title;
     TextView description;
@@ -91,6 +96,16 @@ public class RecipeFullScreen extends Fragment implements View.OnClickListener{
         }
 
          ingredients.setText(ingrString);
+        mImage1 = (ImageView)root.findViewById(R.id.imageView1);
+        mImage1.setOnClickListener(this);
+        mImage2 = (ImageView)root.findViewById(R.id.imageView2);
+        mImage2.setOnClickListener(this);
+        mImage3 = (ImageView)root.findViewById(R.id.imageView3);
+        mImage3.setOnClickListener(this);
+        mImage4 = (ImageView)root.findViewById(R.id.imageView4);
+        mImage4.setOnClickListener(this);
+
+
 
         if (parseObject.get("mainImage") != null) {
             ParseFile applicantResume = (ParseFile) parseObject.get("mainImage");
@@ -107,18 +122,64 @@ public class RecipeFullScreen extends Fragment implements View.OnClickListener{
 
         }
         if (parseObject.get("image1") != null) {
-            ParseFile applicantResume = (ParseFile) parseObject.get("mainImage");
+            ParseFile applicantResume = (ParseFile) parseObject.get("image1");
             applicantResume.getDataInBackground(new GetDataCallback() {
                 public void done(byte[] data, ParseException e) {
                     if (e == null) {
-                        bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
-                        mImage1.setImageBitmap(bmp);
+                        bmp1 = BitmapFactory.decodeByteArray(data, 0, data.length);
+                        mImage1.setImageBitmap(bmp1);
                     } else {
                         e.printStackTrace();
                     }
                 }
             });
-
+        }else{
+            mImage1.setVisibility(View.INVISIBLE);
+        }
+        if (parseObject.get("image2") != null) {
+            ParseFile applicantResume = (ParseFile) parseObject.get("image2");
+            applicantResume.getDataInBackground(new GetDataCallback() {
+                public void done(byte[] data, ParseException e) {
+                    if (e == null) {
+                        bmp2 = BitmapFactory.decodeByteArray(data, 0, data.length);
+                        mImage2.setImageBitmap(bmp2);
+                    } else {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }else{
+            mImage2.setVisibility(View.INVISIBLE);
+        }
+        if (parseObject.get("image3") != null) {
+            ParseFile applicantResume = (ParseFile) parseObject.get("image3");
+            applicantResume.getDataInBackground(new GetDataCallback() {
+                public void done(byte[] data, ParseException e) {
+                    if (e == null) {
+                        bmp3 = BitmapFactory.decodeByteArray(data, 0, data.length);
+                        mImage3.setImageBitmap(bmp3);
+                    } else {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }else{
+            mImage3.setVisibility(View.INVISIBLE);
+        }
+        if (parseObject.get("image4") != null) {
+            ParseFile applicantResume = (ParseFile) parseObject.get("image4");
+            applicantResume.getDataInBackground(new GetDataCallback() {
+                public void done(byte[] data, ParseException e) {
+                    if (e == null) {
+                        bmp4 = BitmapFactory.decodeByteArray(data, 0, data.length);
+                        mImage4.setImageBitmap(bmp4);
+                    } else {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }else{
+            mImage4.setVisibility(View.INVISIBLE);
         }
 
         longDescription = (TextView)root.findViewById(R.id.lDescription);
@@ -130,12 +191,8 @@ public class RecipeFullScreen extends Fragment implements View.OnClickListener{
         Point size = new Point();
         display.getSize(size);
         int width = size.x;
-       ViewGroup.LayoutParams params = photoLayout.getLayoutParams();
-
+        ViewGroup.LayoutParams params = photoLayout.getLayoutParams();
         params.height = (width/4)-26;
-        mImage1 = (ImageView)root.findViewById(R.id.imageView);
-
-
 
             return root;
     }
@@ -151,6 +208,38 @@ public class RecipeFullScreen extends Fragment implements View.OnClickListener{
         if(v.getId() == icon.getId()){
             if(bmp != null) {
                 FullScreenPhoto fullScreenPhoto = new FullScreenPhoto(bmp, mTitle);
+                Utils.replaceFragment(getFragmentManager(), android.R.id.content, fullScreenPhoto, true);
+            }else{
+                Utils.showAlert(getActivity(),"","No picture!");
+            }
+        }
+     else   if(v.getId() == mImage1.getId()){
+            if(bmp1 != null) {
+                FullScreenPhoto fullScreenPhoto = new FullScreenPhoto(bmp1, "");
+                Utils.replaceFragment(getFragmentManager(), android.R.id.content, fullScreenPhoto, true);
+            }else{
+                Utils.showAlert(getActivity(),"","No picture!");
+            }
+        }
+     else   if(v.getId() == mImage2.getId()){
+            if(bmp2 != null) {
+                FullScreenPhoto fullScreenPhoto = new FullScreenPhoto(bmp2, "");
+                Utils.replaceFragment(getFragmentManager(), android.R.id.content, fullScreenPhoto, true);
+            }else{
+                Utils.showAlert(getActivity(),"","No picture!");
+            }
+        }
+    else    if(v.getId() == mImage3.getId()){
+            if(bmp3 != null) {
+                FullScreenPhoto fullScreenPhoto = new FullScreenPhoto(bmp3, "");
+                Utils.replaceFragment(getFragmentManager(), android.R.id.content, fullScreenPhoto, true);
+            }else{
+                Utils.showAlert(getActivity(),"","No picture!");
+            }
+        }
+     else   if(v.getId() == mImage4.getId()){
+            if(bmp4 != null) {
+                FullScreenPhoto fullScreenPhoto = new FullScreenPhoto(bmp4, "");
                 Utils.replaceFragment(getFragmentManager(), android.R.id.content, fullScreenPhoto, true);
             }else{
                 Utils.showAlert(getActivity(),"","No picture!");

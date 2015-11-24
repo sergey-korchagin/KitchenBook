@@ -41,6 +41,9 @@ public class FullScreenPhoto extends Fragment {
 
         mTitle = (TextView)root.findViewById(R.id.fullScreenT);
         mTitle.setText(title);
+        if(title.equals("")){
+            mTitle.setVisibility(View.GONE);
+        }
 
 
         return root;

@@ -92,6 +92,9 @@ public class AddRecipe extends Fragment implements View.OnClickListener, Adapter
     String descriptionText;
     ParseFile file;
     ParseFile file1;
+    ParseFile file2;
+    ParseFile file3;
+    ParseFile file4;
     CheckBox mIsPublic;
     Spinner spinner;
     int category;
@@ -258,6 +261,15 @@ public class AddRecipe extends Fragment implements View.OnClickListener, Adapter
                    }
                    if(file1!=null){
                        recipe1.put("image1", file1);
+                   }
+                   if(file2!=null){
+                       recipe1.put("image2", file2);
+                   }
+                   if(file3!=null){
+                       recipe1.put("image3", file3);
+                   }
+                   if(file4!=null){
+                       recipe1.put("image4", file4);
                    }
 
                }
@@ -600,6 +612,15 @@ public class AddRecipe extends Fragment implements View.OnClickListener, Adapter
                         case 1:
                             mImageView1.setImageBitmap(photo);
                             break;
+                        case 2:
+                            mImageView2.setImageBitmap(photo);
+                            break;
+                        case 3:
+                            mImageView3.setImageBitmap(photo);
+                            break;
+                        case 4:
+                            mImageView4.setImageBitmap(photo);
+                            break;
 
                     }
                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -613,13 +634,19 @@ public class AddRecipe extends Fragment implements View.OnClickListener, Adapter
                     switch (Constants.PHOTO_ID){
                         case 0:
                             // Create the ParseFile
-                            file  = new ParseFile("picture_1.jpeg", image);
+                            file  = new ParseFile("picture_0.jpeg", image);
                             break;
                         case 1:
-                            file1  = new ParseFile("picture_2.jpeg", image);
+                            file1  = new ParseFile("picture_1.jpeg", image);
                             break;
                         case 2:
-
+                            file2  = new ParseFile("picture_2.jpeg", image);
+                            break;
+                        case 3:
+                            file3  = new ParseFile("picture_3.jpeg", image);
+                            break;
+                        case 4:
+                            file4  = new ParseFile("picture_4.jpeg", image);
                             break;
 
                     }
