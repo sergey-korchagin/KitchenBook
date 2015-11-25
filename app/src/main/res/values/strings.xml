@@ -23,7 +23,7 @@
     <string name="ingredients">Ingredients</string>
     <string name="recipe_description">Description</string>
     <string name="more_photos">More photos</string>
-    <string name="cooking_time">Time:</string>
+    <string name="cooking_time">Cooking time:</string>
 
     <color name="blue">#00BFFF</color>
     <color name="red">#F7D9D9</color>

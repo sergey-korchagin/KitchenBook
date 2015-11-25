@@ -24,6 +24,12 @@ public class RecipeObject {
     Bitmap image3;
     Bitmap image4;
 
+    private static RecipeObject ourInstance = new RecipeObject();
+
+    public static RecipeObject getInstance() {
+        return ourInstance;
+    }
+
     public String getTitle() {
         return title;
     }
