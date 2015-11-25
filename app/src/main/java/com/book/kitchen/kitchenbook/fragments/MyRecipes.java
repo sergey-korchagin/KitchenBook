@@ -108,8 +108,10 @@ public class MyRecipes extends Fragment implements View.OnClickListener{
                 if(isDataConnected()){
                     // Toast.makeText( context, "Active Network Type : connected", Toast.LENGTH_SHORT ).show();
                     errorLayout.setVisibility(View.GONE);
+                    getCategories();
                 }else {
                     errorLayout.setVisibility(View.VISIBLE);
+                    progressDialog.dismiss();
                 }
             }
         }, new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE"));
