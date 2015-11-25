@@ -45,5 +45,5 @@
         android:id="@+id/removeIngRow"
         android:background="@drawable/ic_action_cancel"
         android:layout_marginTop="3dp"
-        android:layout_marginRight="3dp" />
+        android:layout_marginRight="8dp" />
 </LinearLayout>
