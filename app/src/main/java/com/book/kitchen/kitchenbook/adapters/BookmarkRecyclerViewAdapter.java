@@ -15,7 +15,9 @@ import com.book.kitchen.kitchenbook.R;
 import com.book.kitchen.kitchenbook.Utils.Utils;
 import com.book.kitchen.kitchenbook.interfaces.OnItemClickListener;
 import com.parse.ParseObject;
+import com.parse.ParseUser;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -76,7 +78,7 @@ public class BookmarkRecyclerViewAdapter extends RecyclerView.Adapter<BookmarkRe
             icon.setOnClickListener(this);
             description.setOnClickListener(this);
 
-            btnRemove = (ImageView) itemView.findViewById(R.id.removeButton);
+            btnRemove = (ImageView) itemView.findViewById(R.id.removeButtonBo);
             btnRemove.setOnClickListener(this);
 
 
@@ -95,7 +97,13 @@ public class BookmarkRecyclerViewAdapter extends RecyclerView.Adapter<BookmarkRe
                         .setCancelable(true).setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        ParseObject.createWithoutData("recipe", mList.get(getAdapterPosition()).getObjectId()).deleteEventually();
+                      //  ParseObject.createWithoutData("recipe", mList.get(getAdapterPosition()).getObjectId()).deleteEventually();
+                        List<String> id = new ArrayList<String>();
+                        id.add( mList.get(getAdapterPosition()).getObjectId());
+                        ParseUser currentUser = ParseUser.getCurrentUser();
+                        currentUser.removeAll("bookmarks", id);
+                        currentUser.saveEventually();
+
                         mList.remove(mList.get(getAdapterPosition()));
                         BookmarkRecyclerViewAdapter.this.updateChanges(getAdapterPosition());
                     }

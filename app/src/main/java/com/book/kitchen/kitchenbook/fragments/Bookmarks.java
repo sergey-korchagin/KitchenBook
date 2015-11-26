@@ -54,31 +54,33 @@ public class Bookmarks extends Fragment {
         ParseUser currentUser = ParseUser.getCurrentUser();
         ArrayList<String> bookmarksArray = (ArrayList<String>) currentUser.get("bookmarks");
         List<ParseQuery<ParseObject>> queries = new ArrayList<ParseQuery<ParseObject>>();
-        if (bookmarksArray != null) {
+        if(bookmarksArray !=null) {
+            if (bookmarksArray.size() != 0) {
 
-            for (String s : bookmarksArray) {
-                ParseQuery query = new ParseQuery("recipe");
-                query.whereEqualTo("objectId", s);
-                queries.add(query);
-            }
-            ParseQuery mainQuery = ParseQuery.or(queries);
-            mainQuery.findInBackground(new FindCallback() {
-                @Override
-                public void done(List objects, ParseException e) {
-
+                for (String s : bookmarksArray) {
+                    ParseQuery query = new ParseQuery("recipe");
+                    query.whereEqualTo("objectId", s);
+                    queries.add(query);
                 }
-
-                @Override
-                public void done(Object o, Throwable throwable) {
-                    if (o instanceof List) {
-                        List<ParseObject> categories = (List<ParseObject>) o;
-                        recyclerViewAdapter = new BookmarkRecyclerViewAdapter(categories, onItemClickListener);
-                        rvB.setAdapter(recyclerViewAdapter);
+                ParseQuery mainQuery = ParseQuery.or(queries);
+                mainQuery.findInBackground(new FindCallback() {
+                    @Override
+                    public void done(List objects, ParseException e) {
 
                     }
-                }
-            });
 
+                    @Override
+                    public void done(Object o, Throwable throwable) {
+                        if (o instanceof List) {
+                            List<ParseObject> categories = (List<ParseObject>) o;
+                            recyclerViewAdapter = new BookmarkRecyclerViewAdapter(categories, onItemClickListener);
+                            rvB.setAdapter(recyclerViewAdapter);
+
+                        }
+                    }
+                });
+
+            }
         }
     }
 

@@ -18,10 +18,12 @@ import android.widget.Toast;
 import com.book.kitchen.kitchenbook.R;
 import com.book.kitchen.kitchenbook.Utils.Utils;
 import com.book.kitchen.kitchenbook.interfaces.OnItemClickListener;
+import com.parse.FindCallback;
 import com.parse.GetDataCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 
 import java.util.List;
 
@@ -106,7 +108,29 @@ public class MyRecipesRecyclerViewAdapter extends RecyclerView.Adapter<MyRecipes
                         .setCancelable(true).setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        ParseObject.createWithoutData("recipe", mList.get(getAdapterPosition()).getObjectId()).deleteEventually();
+                      //  ParseObject.createWithoutData("recipe", mList.get(getAdapterPosition()).getObjectId()).deleteEventually();
+
+                        ParseQuery query = new ParseQuery("recipe");
+                        query.whereEqualTo("objectId", mList.get(getAdapterPosition()).getObjectId());
+                        query.findInBackground(new FindCallback<ParseObject>() {                            @Override
+                            public void done(List<ParseObject> nameList, ParseException e)
+                            {
+                                if (e == null)
+                                {
+                                    for (ParseObject nameObj : nameList)
+                                    {
+                                        nameObj.put("userId", "deletedByUser");
+                                        nameObj.saveInBackground();
+
+                                    }
+                                }
+                                else
+                                {
+                                }
+                            }
+                        });
+
+
                         mList.remove(mList.get(getAdapterPosition()));
                         MyRecipesRecyclerViewAdapter.this.updateChanges(getAdapterPosition());
                     }

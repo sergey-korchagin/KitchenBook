@@ -34,7 +34,7 @@
                     android:layout_gravity="center"
                     android:background="@drawable/ic_action_cancel"
                     android:layout_marginLeft="5dp"
-                    android:id="@+id/removeButton" />
+                    android:id="@+id/removeButtonBo" />
 
                 <TextView
                     android:layout_width="wrap_content"
