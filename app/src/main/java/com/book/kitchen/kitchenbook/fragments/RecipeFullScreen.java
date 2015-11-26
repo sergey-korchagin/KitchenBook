@@ -51,8 +51,9 @@ public class RecipeFullScreen extends Fragment implements View.OnClickListener{
     }
 
     @SuppressLint("ValidFragment")
-    public RecipeFullScreen(ParseObject object) {
+    public RecipeFullScreen(ParseObject object, boolean isMyRecipe) {
         parseObject = object;
+        this.isMyyRecipe = isMyRecipe;
     }
 
     int nullCounter = 0;
@@ -79,11 +80,16 @@ public class RecipeFullScreen extends Fragment implements View.OnClickListener{
     ProgressBar progressBar2;
     ProgressBar progressBar3;
     ProgressBar progressBar4;
-
+    String objectId;
     TextView morePhotos;
+    ImageView star;
+    ParseUser currentUser;
+    boolean isMyyRecipe;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_recipe_full_screen, container, false);
+        currentUser = ParseUser.getCurrentUser();
+        objectId = parseObject.getObjectId();
 
         progressBar1 = (ProgressBar)root.findViewById(R.id.p1);
         progressBar2 = (ProgressBar)root.findViewById(R.id.p2);
@@ -137,8 +143,26 @@ public class RecipeFullScreen extends Fragment implements View.OnClickListener{
         ViewGroup.LayoutParams params = photoLayout.getLayoutParams();
         params.height = (width/4)-26;
 
+        star = (ImageView)root.findViewById(R.id.starBtn);
+        star.setOnClickListener(this);
+
+        if(inBookmarks() || isMyyRecipe){
+            star.setVisibility(View.INVISIBLE);
+        }
 
             return root;
+    }
+
+
+    public boolean inBookmarks(){
+         ArrayList<String> bookmarksArray = (ArrayList<String>)currentUser.get("bookmarks");
+        if(bookmarksArray != null){
+            if(bookmarksArray.contains(objectId)){
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public void fillPhotos(){
@@ -296,6 +320,14 @@ public class RecipeFullScreen extends Fragment implements View.OnClickListener{
             }else{
                 Utils.showAlert(getActivity(),"","No picture!");
             }
+        }
+        else if(star.getId() == v.getId()){
+          // ArrayList<String> bookmarksArray = (ArrayList<String>)currentUser.get("bookmarks");
+            currentUser.add("bookmarks", objectId);
+            currentUser.saveEventually();
+            Utils.showAlert(getActivity(),"","Added to bookmarks");
+            star.setVisibility(View.INVISIBLE);
+
         }
     }
 }

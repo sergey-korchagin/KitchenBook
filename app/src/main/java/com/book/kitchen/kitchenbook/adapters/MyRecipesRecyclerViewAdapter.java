@@ -98,7 +98,7 @@ public class MyRecipesRecyclerViewAdapter extends RecyclerView.Adapter<MyRecipes
         @Override
         public void onClick(View v) {
             if (v.getId() == description.getId() || v.getId() == icon.getId()) {
-                onItemClickListener.onCardClickListener(mList.get(getAdapterPosition()));
+                onItemClickListener.onCardClickListener(mList.get(getAdapterPosition()), true);
             } else if (v.getId() == btnRemove.getId()) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 builder.setTitle("Delete")

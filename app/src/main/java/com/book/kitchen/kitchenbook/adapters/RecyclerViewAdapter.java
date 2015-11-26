@@ -46,6 +46,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         holder.title.setText(mList.get(position).get("title").toString());
         holder.userName.setText(Utils.capitalizeFirstLetter(mList.get(position).get("userName").toString()));
         holder.category.setText(Utils.getCategoryFromCode(context, (int) mList.get(position).get("category")));
+        holder.cookingTime.setText((mList.get(position).get("cookingTime").toString()));
         if(mList.get(position).get("mainImage")!=null){
             ParseFile applicantResume = (ParseFile) mList.get(position).get("mainImage");
             applicantResume.getDataInBackground(new GetDataCallback() {
@@ -73,6 +74,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         ImageView icon;
         TextView userName;
         TextView category;
+        TextView cookingTime;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -85,6 +87,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             userName = (TextView)itemView.findViewById(R.id.cardUserName);
             description.setOnClickListener(this);
             category = (TextView)itemView.findViewById(R.id.card_category);
+            cookingTime = (TextView)itemView.findViewById(R.id.coockingTime);
 
 
         }
@@ -92,7 +95,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         @Override
         public void onClick(View v) {
             if(v.getId() == description.getId()|| v.getId() == icon.getId()) {
-                onItemClickListener.onCardClickListener(mList.get(getAdapterPosition()));
+                onItemClickListener.onCardClickListener(mList.get(getAdapterPosition()), false);
             }
         }
 

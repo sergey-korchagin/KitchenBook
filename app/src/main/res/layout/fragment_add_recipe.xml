@@ -87,9 +87,10 @@
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
                         android:id="@+id/recipe_title"
-                        android:layout_gravity="center_horizontal"
+                        android:layout_gravity="bottom"
                         android:hint="Title"
                         android:maxLength="15"
+                        android:maxLines="1"
                         android:layout_weight="1" />
 
                     <EditText

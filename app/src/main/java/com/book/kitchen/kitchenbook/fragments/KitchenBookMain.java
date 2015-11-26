@@ -78,14 +78,15 @@ public class KitchenBookMain extends Fragment implements OnItemClickListener{
 
         publicRecipes.setOnItemClickListener(this);
         myRecipes.setOnItemClickListener(this);
+        bookmarks.setOnItemClickListener(this);
 
 
         return fragments;
     }
 
     @Override
-    public void onCardClickListener(ParseObject object) {
-        RecipeFullScreen recipeFullScreen = new RecipeFullScreen(object);
+    public void onCardClickListener(ParseObject object, boolean isMy) {
+        RecipeFullScreen recipeFullScreen = new RecipeFullScreen(object, isMy);
         Utils.replaceFragment(getFragmentManager(), android.R.id.content, recipeFullScreen, true);
     }
 }

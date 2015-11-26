@@ -10,7 +10,7 @@
 
     <android.support.v7.widget.CardView
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/cvMy"
+        android:id="@+id/cvBo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         card_view:cardUseCompatPadding="true"
@@ -26,7 +26,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
-                android:id="@+id/titleLayoutMy">
+                android:id="@+id/titleLayoutBo">
 
                 <ImageView
                     android:layout_width="15dp"
@@ -45,20 +45,20 @@
                     android:textStyle="bold"
                     android:gravity="center"
                     android:layout_weight="1"
-                    android:id="@+id/cardTitleMy" />
+                    android:id="@+id/cardTitleBo" />
 
             </LinearLayout>
 
 
             <LinearLayout
-                android:id="@+id/topLayoutMy"
+                android:id="@+id/topLayoutBo"
                 android:layout_width="fill_parent"
                 android:layout_height="80dp"
-                android:layout_below="@+id/titleLayoutMy"
+                android:layout_below="@+id/titleLayoutBo"
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:id="@+id/itemIconMy"
+                    android:id="@+id/itemIconBo"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:layout_gravity="left"
@@ -71,7 +71,7 @@
                     android:layout_height="fill_parent"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="Medium Text"
-                    android:id="@+id/tmpTvMy"
+                    android:id="@+id/tmpTvBo"
                     android:gravity="center_horizontal|center_vertical"
                     android:layout_gravity="center"
                     android:layout_weight="1" />
@@ -81,8 +81,8 @@
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
-                android:id="@+id/bottomLayoutMy"
-                android:layout_below="@+id/topLayoutMy"
+                android:id="@+id/bottomLayoutBo"
+                android:layout_below="@+id/topLayoutBo"
                 >
 
                 <TextView
@@ -92,7 +92,7 @@
                     android:text="Small Text"
                     android:layout_gravity="center"
                     android:layout_marginLeft="15dp"
-                    android:id="@+id/my_card_category"
+                    android:id="@+id/bo_card_category"
                     android:layout_centerVertical="true"
                     android:layout_alignParentStart="true" />
 

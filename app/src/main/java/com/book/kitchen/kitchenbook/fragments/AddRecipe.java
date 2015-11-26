@@ -118,6 +118,8 @@ public class AddRecipe extends Fragment implements View.OnClickListener, Adapter
     LinearLayout ln;
     Drawable originalDrawable;
     View root;
+    EditText cookingTime;
+    String mCookingTime;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState ) {
         root = inflater.inflate(R.layout.fragment_add_recipe, container, false);
@@ -193,7 +195,9 @@ public class AddRecipe extends Fragment implements View.OnClickListener, Adapter
         mImageView4.setOnClickListener(this);
 
         deleteRow = (ImageView)root.findViewById(R.id.removeIngRow);
-        deleteRow.setOnClickListener(this);
+        deleteRow.setVisibility(View.INVISIBLE);
+
+        cookingTime = (EditText)root.findViewById(R.id.cookingTime);
         return root;
 
     }
@@ -279,6 +283,7 @@ public class AddRecipe extends Fragment implements View.OnClickListener, Adapter
                    recipe1.put("public","private");
 
                }
+               recipe1.put("cookingTime",mCookingTime);
                recipe1.saveInBackground(new SaveCallback() {
                    @Override
                    public void done(ParseException e) {
@@ -422,11 +427,10 @@ public class AddRecipe extends Fragment implements View.OnClickListener, Adapter
             qtyStr[i] = allQty.get(i).getText().toString();
         }
 
-
-
-
         titleText = title.getText().toString();
         descriptionText = description.getText().toString();
+        mCookingTime = cookingTime.getText().toString();
+
         if(titleText.equals("") && descriptionText.equals("")){
             Utils.showAlert(getActivity(),"Empty field","Please fill title and description fields");
             return false;
@@ -441,6 +445,10 @@ public class AddRecipe extends Fragment implements View.OnClickListener, Adapter
         }else if(!spinner.isSelected()){
             Utils.showAlert(getActivity(),"Empty field","Please choice category");
             return false;
+        }else if(mCookingTime.equals("")){
+            Utils.showAlert(getActivity(),"Empty field","Please fill cooking time");
+            return false;
+
         }
         if(!titleText.equals("")){
             titleText = titleText.substring(0, 1).toUpperCase()+titleText.substring(1);

@@ -6,8 +6,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.book.kitchen.kitchenbook.R;
+import com.book.kitchen.kitchenbook.interfaces.OnItemClickListener;
 import com.parse.ParseObject;
 
 import java.util.List;
@@ -19,9 +21,12 @@ public class BookmarkRecyclerViewAdapter extends RecyclerView.Adapter<BookmarkRe
 
     List<ParseObject> mList;
     Context context;
+    OnItemClickListener onItemClickListener;
 
-    public BookmarkRecyclerViewAdapter(){
 
+    public BookmarkRecyclerViewAdapter(List<ParseObject> list, OnItemClickListener listener){
+        mList = list;
+        onItemClickListener = listener;
     }
 
     @Override
@@ -44,15 +49,23 @@ public class BookmarkRecyclerViewAdapter extends RecyclerView.Adapter<BookmarkRe
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         CardView cv;
-
+        TextView description;
+        TextView title;
 
         ViewHolder(View itemView) {
             super(itemView);
+            cv = (CardView)itemView.findViewById(R.id.cvBo);
+            description = (TextView) itemView.findViewById(R.id.tmpTvBo);
+            title = (TextView) itemView.findViewById(R.id.cardTitleBo);
+
+
 
         }
 
         @Override
         public void onClick(View v) {
+
+            onItemClickListener.onCardClickListener(mList.get(getAdapterPosition()), true);
 
         }
     }
