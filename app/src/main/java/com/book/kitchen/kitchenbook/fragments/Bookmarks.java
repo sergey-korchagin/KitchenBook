@@ -19,6 +19,7 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,7 +44,6 @@ public class Bookmarks extends Fragment {
         rvB.setHasFixedSize(true);
 
 
-
         getCategories();
 
         return root;
@@ -52,46 +52,39 @@ public class Bookmarks extends Fragment {
 
     public void getCategories() {
         ParseUser currentUser = ParseUser.getCurrentUser();
-        ArrayList<String> bookmarksArray = (ArrayList<String>)currentUser.get("bookmarks");
+        ArrayList<String> bookmarksArray = (ArrayList<String>) currentUser.get("bookmarks");
         List<ParseQuery<ParseObject>> queries = new ArrayList<ParseQuery<ParseObject>>();
-        if(bookmarksArray != null) {
+        if (bookmarksArray != null) {
 
+
+            //  List<ParseQuery<ParseObject>> queries = new ArrayList<ParseQuery<ParseObject>>();
             for (String s : bookmarksArray) {
                 ParseQuery query = new ParseQuery("recipe");
                 query.whereEqualTo("objectId", s);
                 queries.add(query);
             }
-//            List<ParseQuery<ParseObject>> queries = new ArrayList<ParseQuery<ParseObject>>();
-//            for (String s : bookmarksArray) {
-//                ParseQuery query = new ParseQuery("recipe");
-//                query.whereEqualTo("objectId", s);
-//                queries.add(query);
-//            }
-//            ParseQuery mainQuery = new ParseQuery.or(queries);
-//            mainQuery.findInBackground(new FindCallback() {
-//                @Override
-//                public void done(List objects, ParseException e) {
-//
-//                }
-//
-//                @Override
-//                public void done(Object o, Throwable throwable) {
-//                    if (o instanceof List) {
-//                        List<ParseObject> categories = (List<ParseObject>) o;
-//                        recyclerViewAdapter = new BookmarkRecyclerViewAdapter(categories, onItemClickListener);
-//                        rvB.setAdapter(recyclerViewAdapter);
-//
-//                    }
-//                }
-//            });
+            ParseQuery mainQuery = ParseQuery.or(queries);
+            mainQuery.findInBackground(new FindCallback() {
+                @Override
+                public void done(List objects, ParseException e) {
 
-bookmarksArray.toString();
+                }
+
+                @Override
+                public void done(Object o, Throwable throwable) {
+                    if (o instanceof List) {
+                        List<ParseObject> categories = (List<ParseObject>) o;
+                        recyclerViewAdapter = new BookmarkRecyclerViewAdapter(categories, onItemClickListener);
+                        rvB.setAdapter(recyclerViewAdapter);
+
+                    }
+                }
+            });
+
         }
-
-
     }
 
-    public void setOnItemClickListener(OnItemClickListener listener){
+    public void setOnItemClickListener(OnItemClickListener listener) {
         this.onItemClickListener = listener;
     }
 }
