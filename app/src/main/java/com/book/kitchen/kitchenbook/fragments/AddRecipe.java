@@ -284,6 +284,7 @@ public class AddRecipe extends Fragment implements View.OnClickListener, Adapter
 
                }
                recipe1.put("cookingTime",mCookingTime);
+               recipe1.put("isBookmark", false);
                recipe1.saveInBackground(new SaveCallback() {
                    @Override
                    public void done(ParseException e) {

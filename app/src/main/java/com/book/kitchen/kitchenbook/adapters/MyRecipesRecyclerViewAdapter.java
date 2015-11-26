@@ -108,27 +108,27 @@ public class MyRecipesRecyclerViewAdapter extends RecyclerView.Adapter<MyRecipes
                         .setCancelable(true).setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                      //  ParseObject.createWithoutData("recipe", mList.get(getAdapterPosition()).getObjectId()).deleteEventually();
+                        ParseObject.createWithoutData("recipe", mList.get(getAdapterPosition()).getObjectId()).deleteEventually();
 
-                        ParseQuery query = new ParseQuery("recipe");
-                        query.whereEqualTo("objectId", mList.get(getAdapterPosition()).getObjectId());
-                        query.findInBackground(new FindCallback<ParseObject>() {                            @Override
-                            public void done(List<ParseObject> nameList, ParseException e)
-                            {
-                                if (e == null)
-                                {
-                                    for (ParseObject nameObj : nameList)
-                                    {
-                                        nameObj.put("userId", "deletedByUser");
-                                        nameObj.saveInBackground();
-
-                                    }
-                                }
-                                else
-                                {
-                                }
-                            }
-                        });
+//                        ParseQuery query = new ParseQuery("recipe");
+//                        query.whereEqualTo("objectId", mList.get(getAdapterPosition()).getObjectId());
+//                        query.findInBackground(new FindCallback<ParseObject>() {                            @Override
+//                            public void done(List<ParseObject> nameList, ParseException e)
+//                            {
+//                                if (e == null)
+//                                {
+//                                    for (ParseObject nameObj : nameList)
+//                                    {
+//                                        nameObj.put("userId", "deletedByUser");
+//                                        nameObj.saveInBackground();
+//
+//                                    }
+//                                }
+//                                else
+//                                {
+//                                }
+//                            }
+//                        });
 
 
                         mList.remove(mList.get(getAdapterPosition()));

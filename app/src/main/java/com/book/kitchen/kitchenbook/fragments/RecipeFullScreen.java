@@ -145,24 +145,11 @@ public class RecipeFullScreen extends Fragment implements View.OnClickListener{
 
         star = (ImageView)root.findViewById(R.id.starBtn);
         star.setOnClickListener(this);
-
-        if(inBookmarks() || isMyyRecipe){
+        if(parseObject.getBoolean("isBookmark") || currentUser.getObjectId().equals(parseObject.get("userId"))){
             star.setVisibility(View.INVISIBLE);
         }
 
             return root;
-    }
-
-
-    public boolean inBookmarks(){
-         ArrayList<String> bookmarksArray = (ArrayList<String>)currentUser.get("bookmarks");
-        if(bookmarksArray != null){
-            if(bookmarksArray.contains(objectId)){
-                return true;
-            }
-        }
-
-        return false;
     }
 
     public void fillPhotos(){
@@ -323,9 +310,8 @@ public class RecipeFullScreen extends Fragment implements View.OnClickListener{
         }
         else if(star.getId() == v.getId()){
           // ArrayList<String> bookmarksArray = (ArrayList<String>)currentUser.get("bookmarks");
-            currentUser.add("bookmarks", objectId);
-            currentUser.saveEventually();
-            Utils.showAlert(getActivity(),"","Added to bookmarks");
+
+            Utils.cloneObjectforBookmark(getActivity(), currentUser, parseObject);
             star.setVisibility(View.INVISIBLE);
 
         }

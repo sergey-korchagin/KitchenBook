@@ -68,7 +68,7 @@ public class MyRecipes extends Fragment implements View.OnClickListener{
     public void getCategories() {
        ParseUser currentUser = ParseUser.getCurrentUser();
         ParseQuery query = new ParseQuery("recipe");
-        query.whereEqualTo("userId", currentUser.getObjectId());
+        query.whereEqualTo("userId", currentUser.getObjectId()).whereEqualTo("isBookmark",false);
         query.addDescendingOrder("createdAt");
         query.findInBackground(new FindCallback() {
             @Override

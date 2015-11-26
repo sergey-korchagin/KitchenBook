@@ -51,7 +51,7 @@ public class Bookmarks extends Fragment {
 
 
     public void getCategories() {
-        ParseUser currentUser = ParseUser.getCurrentUser();
+       /* ParseUser currentUser = ParseUser.getCurrentUser();
         ArrayList<String> bookmarksArray = (ArrayList<String>) currentUser.get("bookmarks");
         List<ParseQuery<ParseObject>> queries = new ArrayList<ParseQuery<ParseObject>>();
         if(bookmarksArray !=null) {
@@ -81,7 +81,29 @@ public class Bookmarks extends Fragment {
                 });
 
             }
-        }
+        }*/
+        ParseUser currentUser = ParseUser.getCurrentUser();
+
+        ParseQuery query = new ParseQuery("recipe");
+        query.whereEqualTo("userId", currentUser.getObjectId()).whereEqualTo("isBookmark",true);
+
+        query.addDescendingOrder("createdAt");
+        //     query.whereEqualTo("public","public");
+        query.findInBackground(new FindCallback() {
+            @Override
+            public void done(List objects, ParseException e) {
+            }
+
+            @Override
+            public void done(Object o, Throwable throwable) {
+                if (o instanceof List) {
+                    List<ParseObject> categories = (List<ParseObject>) o;
+                    recyclerViewAdapter = new BookmarkRecyclerViewAdapter(categories, onItemClickListener);
+                    rvB.setAdapter(recyclerViewAdapter);
+
+                }
+            }
+        });
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {

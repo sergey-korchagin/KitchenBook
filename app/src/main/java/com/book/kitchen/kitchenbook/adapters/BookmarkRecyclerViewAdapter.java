@@ -3,6 +3,8 @@ package com.book.kitchen.kitchenbook.adapters;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,9 +13,15 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.book.kitchen.kitchenbook.R;
 import com.book.kitchen.kitchenbook.Utils.Utils;
 import com.book.kitchen.kitchenbook.interfaces.OnItemClickListener;
+import com.book.kitchen.kitchenbook.managers.VolleyManager;
+import com.parse.GetDataCallback;
+import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
@@ -29,6 +37,7 @@ public class BookmarkRecyclerViewAdapter extends RecyclerView.Adapter<BookmarkRe
     Context context;
     OnItemClickListener onItemClickListener;
 
+    VolleyManager volleyManager;
 
     public BookmarkRecyclerViewAdapter(List<ParseObject> list, OnItemClickListener listener){
         mList = list;
@@ -39,14 +48,30 @@ public class BookmarkRecyclerViewAdapter extends RecyclerView.Adapter<BookmarkRe
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.bookmark_card, parent, false);
         context = parent.getContext();
+        volleyManager = VolleyManager.getInstance();
+
         return new ViewHolder(v);    }
 
     @Override
-    public void onBindViewHolder(BookmarkRecyclerViewAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(final BookmarkRecyclerViewAdapter.ViewHolder holder, int position) {
 
         holder.description.setText(Utils.capitalizeFirstLetter(mList.get(position).get("description").toString()));
         holder.title.setText(mList.get(position).get("title").toString());
-//        holder.category.setText(Utils.getCategoryFromCode(context, (int) mList.get(position).get("category")));//.toString());
+        if (mList.get(position).get("mainImage") != null) {
+            ParseFile applicantResume = (ParseFile) mList.get(position).get("mainImage");
+            volleyManager.addToRequestQueue(volleyManager.createImageRequest(applicantResume.getUrl(), new Response.Listener<Bitmap>() {
+                @Override
+                public void onResponse(Bitmap response) {
+                   holder.icon.setImageBitmap(response);
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    error.printStackTrace();
+                }
+            }));
+
+        }//        holder.category.setText(Utils.getCategoryFromCode(context, (int) mList.get(position).get("category")));//.toString());
 
 
 
@@ -98,12 +123,7 @@ public class BookmarkRecyclerViewAdapter extends RecyclerView.Adapter<BookmarkRe
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                       //  ParseObject.createWithoutData("recipe", mList.get(getAdapterPosition()).getObjectId()).deleteEventually();
-                        List<String> id = new ArrayList<String>();
-                        id.add( mList.get(getAdapterPosition()).getObjectId());
-                        ParseUser currentUser = ParseUser.getCurrentUser();
-                        currentUser.removeAll("bookmarks", id);
-                        currentUser.saveEventually();
-
+                        ParseObject.createWithoutData("recipe", mList.get(getAdapterPosition()).getObjectId()).deleteEventually();
                         mList.remove(mList.get(getAdapterPosition()));
                         BookmarkRecyclerViewAdapter.this.updateChanges(getAdapterPosition());
                     }

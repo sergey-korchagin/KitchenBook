@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -16,10 +17,13 @@ import com.book.kitchen.kitchenbook.R;
 import com.parse.GetCallback;
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.RequestPasswordResetCallback;
+import com.parse.SaveCallback;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -153,5 +157,49 @@ public class Utils {
         }
 
         return category;
+    }
+
+
+    public static void cloneObjectforBookmark(final Context context, ParseUser currentUser, ParseObject clone){
+
+        ParseObject recipe1 = new ParseObject("recipe");
+        recipe1.put("userId", currentUser.getObjectId());
+        recipe1.put("title", clone.get("title"));
+        recipe1.put("description", clone.get("description"));
+        recipe1.put("userName", clone.get("userName"));
+        recipe1.put("category", clone.get("category"));
+        recipe1.put("ingredients", clone.get("ingredients"));
+        recipe1.put("quantity", clone.get("quantity"));
+        recipe1.put("longDescription", clone.get("longDescription"));
+        if(clone.get("mainImage") != null){
+            recipe1.put("mainImage", clone.get("mainImage"));
+        }
+        if(clone.get("image1") !=null){
+            recipe1.put("image1", clone.get("image1"));
+        }
+        if(clone.get("image2")!= null){
+            recipe1.put("image2", clone.get("image2"));
+        }
+        if(clone.get("image3")!= null){
+            recipe1.put("image3", clone.get("image3"));
+        }
+        if(clone.get("image4")!= null){
+            recipe1.put("image4", clone.get("image4"));
+        }
+
+        recipe1.put("public", "private");
+        recipe1.put("cookingTime", clone.get("cookingTime"));
+        recipe1.put("isBookmark", true);
+        recipe1.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null) {
+                    showAlert(context, "", "Added to bookmarks");
+
+                } else {
+                }
+            }
+        });
+
     }
 }
