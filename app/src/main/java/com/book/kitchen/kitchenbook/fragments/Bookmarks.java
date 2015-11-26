@@ -56,8 +56,6 @@ public class Bookmarks extends Fragment {
         List<ParseQuery<ParseObject>> queries = new ArrayList<ParseQuery<ParseObject>>();
         if (bookmarksArray != null) {
 
-
-            //  List<ParseQuery<ParseObject>> queries = new ArrayList<ParseQuery<ParseObject>>();
             for (String s : bookmarksArray) {
                 ParseQuery query = new ParseQuery("recipe");
                 query.whereEqualTo("objectId", s);

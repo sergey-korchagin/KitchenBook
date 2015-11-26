@@ -1,14 +1,18 @@
 package com.book.kitchen.kitchenbook.adapters;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.book.kitchen.kitchenbook.R;
+import com.book.kitchen.kitchenbook.Utils.Utils;
 import com.book.kitchen.kitchenbook.interfaces.OnItemClickListener;
 import com.parse.ParseObject;
 
@@ -38,12 +42,17 @@ public class BookmarkRecyclerViewAdapter extends RecyclerView.Adapter<BookmarkRe
     @Override
     public void onBindViewHolder(BookmarkRecyclerViewAdapter.ViewHolder holder, int position) {
 
+        holder.description.setText(Utils.capitalizeFirstLetter(mList.get(position).get("description").toString()));
+        holder.title.setText(mList.get(position).get("title").toString());
+//        holder.category.setText(Utils.getCategoryFromCode(context, (int) mList.get(position).get("category")));//.toString());
+
+
+
     }
 
     @Override
     public int getItemCount() {
-       // return mList.size();
-        return 1;
+        return mList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -51,12 +60,24 @@ public class BookmarkRecyclerViewAdapter extends RecyclerView.Adapter<BookmarkRe
         CardView cv;
         TextView description;
         TextView title;
+        TextView category;
+        ImageView icon;
+        ImageView btnRemove;
+
+
 
         ViewHolder(View itemView) {
             super(itemView);
             cv = (CardView)itemView.findViewById(R.id.cvBo);
             description = (TextView) itemView.findViewById(R.id.tmpTvBo);
             title = (TextView) itemView.findViewById(R.id.cardTitleBo);
+
+            icon = (ImageView) itemView.findViewById(R.id.itemIconBo);
+            icon.setOnClickListener(this);
+            description.setOnClickListener(this);
+
+            btnRemove = (ImageView) itemView.findViewById(R.id.removeButton);
+            btnRemove.setOnClickListener(this);
 
 
 
@@ -65,9 +86,31 @@ public class BookmarkRecyclerViewAdapter extends RecyclerView.Adapter<BookmarkRe
         @Override
         public void onClick(View v) {
 
-            onItemClickListener.onCardClickListener(mList.get(getAdapterPosition()), true);
+            if (v.getId() == description.getId() || v.getId() == icon.getId()) {
+                onItemClickListener.onCardClickListener(mList.get(getAdapterPosition()), true);
+            } else if (v.getId() == btnRemove.getId()) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("Delete")
+                        .setMessage("Are you sure?")
+                        .setCancelable(true).setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ParseObject.createWithoutData("recipe", mList.get(getAdapterPosition()).getObjectId()).deleteEventually();
+                        mList.remove(mList.get(getAdapterPosition()));
+                        BookmarkRecyclerViewAdapter.this.updateChanges(getAdapterPosition());
+                    }
+                });
 
+                AlertDialog alert = builder.create();
+                alert.show();
+
+            }
         }
+    }
+
+    public void updateChanges(int position) {
+        notifyItemChanged(position);
+
     }
 
 }
