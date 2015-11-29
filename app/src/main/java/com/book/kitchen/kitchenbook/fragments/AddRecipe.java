@@ -28,6 +28,7 @@ import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -67,7 +68,7 @@ import java.util.zip.CheckedOutputStream;
 /**
  * Created by User on 15/11/2015.
  */
-public class AddRecipe extends Fragment implements View.OnClickListener, AdapterView.OnItemSelectedListener {
+public class AddRecipe extends Fragment implements View.OnClickListener, AdapterView.OnItemSelectedListener, View.OnTouchListener {
     private final int REQUEST_CODE_FROM_GALLERY_IMAGE = 1;
     private final int REQUEST_CODE_HIGH_QUALITY_IMAGE = 2;
     private static final String IMAGE_DIRECTORY_NAME = "Hello Camera";
@@ -156,6 +157,7 @@ public class AddRecipe extends Fragment implements View.OnClickListener, Adapter
         recipeLayout = (LinearLayout)root.findViewById(R.id.ingredientsLay);
         spinner = (Spinner)root.findViewById(R.id.spinner);
         spinner.setOnItemSelectedListener(this);
+        spinner.setOnTouchListener(this);
         spinner.setPrompt("Category");
         List<String> elements = new ArrayList<String>();
         elements.add(getResources().getString(R.string.choice_category)); // 0 position
@@ -302,6 +304,8 @@ public class AddRecipe extends Fragment implements View.OnClickListener, Adapter
             InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
         }else if(mIsPublic.getId() == v.getId()){
+            InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
             if( mIsPublic.isChecked()){
                 Utils.showAlert(getActivity(),"Alert", "All users will see your recipe! Need to fill all fields");
                 isPublic = true;
@@ -718,4 +722,12 @@ public class AddRecipe extends Fragment implements View.OnClickListener, Adapter
         return outputDir;
     }
 
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        if(v.getId() == spinner.getId()){
+            InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+        }
+        return false;
+    }
 }

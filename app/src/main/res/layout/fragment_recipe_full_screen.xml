@@ -72,7 +72,7 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/scrollView2"
         android:layout_gravity="center_horizontal" >
         <LinearLayout
@@ -128,6 +128,8 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="@string/more_photos"
                 android:id="@+id/photosText"/>
+
+
 
             <LinearLayout
                 android:orientation="horizontal"
@@ -216,6 +218,49 @@
                     android:id="@+id/imageView4" />
                </RelativeLayout>
 
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/commentsLayout">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Comments"
+                    android:id="@+id/commentsTitle"
+                    android:layout_marginLeft="10dp"
+                    android:textStyle="bold" />
+
+                <ListView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/comentList"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textMultiLine"
+                    android:ems="10"
+                    android:id="@+id/commentText"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Add comment"
+                    android:id="@+id/btnAddComment"
+                    android:layout_gravity="right"
+                    android:password="false"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginRight="10dp" />
             </LinearLayout>
         </LinearLayout>
 
