@@ -182,7 +182,7 @@ public class RecipeFullScreen extends Fragment implements View.OnClickListener{
 
         return root;
     }
-   
+
 
         public void getComments(){
             ParseQuery query = new ParseQuery("comment");

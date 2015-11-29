@@ -456,7 +456,7 @@ public class AddRecipe extends Fragment implements View.OnClickListener, Adapter
 
         }
         if(!titleText.equals("")){
-            titleText = titleText.substring(0, 1).toUpperCase()+titleText.substring(1);
+            titleText = titleText.substring(0, 1).toLowerCase()+titleText.substring(1);
         }
 
         for (int i = 0; i<ingredients.length;i++){

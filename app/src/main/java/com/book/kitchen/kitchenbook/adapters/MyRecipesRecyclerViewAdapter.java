@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -51,7 +52,7 @@ public class MyRecipesRecyclerViewAdapter extends RecyclerView.Adapter<MyRecipes
     @Override
     public void onBindViewHolder(final MyRecipesRecyclerViewAdapter.ViewHolder holder, int position) {
         holder.description.setText(Utils.capitalizeFirstLetter(mList.get(position).get("description").toString()));
-        holder.title.setText(mList.get(position).get("title").toString());
+        holder.title.setText(Utils.capitalizeFirstLetter(mList.get(position).get("title").toString()));
         holder.category.setText(Utils.getCategoryFromCode(context, (int) mList.get(position).get("category")));//.toString());
         holder.public_or_private.setText(Utils.capitalizeFirstLetter(mList.get(position).get("public").toString()));
         if (mList.get(position).get("mainImage") != null) {
@@ -101,6 +102,7 @@ public class MyRecipesRecyclerViewAdapter extends RecyclerView.Adapter<MyRecipes
         public void onClick(View v) {
             if (v.getId() == description.getId() || v.getId() == icon.getId()) {
                 onItemClickListener.onCardClickListener(mList.get(getAdapterPosition()), true);
+
             } else if (v.getId() == btnRemove.getId()) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 builder.setTitle("Delete")

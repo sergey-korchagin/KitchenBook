@@ -10,11 +10,14 @@ import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -42,6 +45,7 @@ public class PublicRecipes extends Fragment implements AdapterView.OnItemSelecte
     LinearLayoutManager mRecycleViewLayout;
     OnItemClickListener onItemClickListener;
     ProgressDialog progressDialog;
+    EditText searchView;
 
     FrameLayout errorLayout;
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -56,7 +60,28 @@ public class PublicRecipes extends Fragment implements AdapterView.OnItemSelecte
         getCategories();
         errorLayout = (FrameLayout) root.findViewById(R.id.networkErrorLayout);
 
-       intiReciever();
+        intiReciever();
+
+        searchView = (EditText)root.findViewById(R.id.searchView);
+        searchView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String data = searchView.getText().toString();
+                recyclerViewAdapter.filter(data.toLowerCase());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+
 
         return root;
     }

@@ -9,8 +9,5 @@ public interface FindInterface {
 
     public void filter(String constraint);
 
-    public void initFilter();
-
-    public void dateFilter(int year, int monthOfYear, int dayOfMonth, Date date);
 
 }

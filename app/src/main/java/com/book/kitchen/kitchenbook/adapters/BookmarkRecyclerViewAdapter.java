@@ -56,7 +56,7 @@ public class BookmarkRecyclerViewAdapter extends RecyclerView.Adapter<BookmarkRe
     public void onBindViewHolder(final BookmarkRecyclerViewAdapter.ViewHolder holder, int position) {
 
         holder.description.setText(Utils.capitalizeFirstLetter(mList.get(position).get("description").toString()));
-        holder.title.setText(mList.get(position).get("title").toString());
+        holder.title.setText(Utils.capitalizeFirstLetter(mList.get(position).get("title").toString()));
         if (mList.get(position).get("mainImage") != null) {
             ParseFile applicantResume = (ParseFile) mList.get(position).get("mainImage");
             volleyManager.addToRequestQueue(volleyManager.createImageRequest(applicantResume.getUrl(), new Response.Listener<Bitmap>() {
