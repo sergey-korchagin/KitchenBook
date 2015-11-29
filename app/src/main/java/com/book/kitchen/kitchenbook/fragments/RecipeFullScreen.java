@@ -168,7 +168,9 @@ public class RecipeFullScreen extends Fragment implements View.OnClickListener{
             star.setVisibility(View.INVISIBLE);
         }
         commentsList = (ListView) root.findViewById(R.id.comentList);
-        getComments();
+        if(!parseObject.getBoolean("isBookmark")){
+            getComments();
+        }
         return root;
     }
 
