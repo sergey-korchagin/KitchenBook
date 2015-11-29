@@ -7,10 +7,12 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -18,6 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.android.volley.Response;
@@ -95,6 +98,7 @@ public class RecipeFullScreen extends Fragment implements View.OnClickListener{
     TextView btnAddComment;
     EditText commentText;
     ListView commentsList;
+    ScrollView sv;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_recipe_full_screen, container, false);
@@ -129,7 +133,7 @@ public class RecipeFullScreen extends Fragment implements View.OnClickListener{
            ingrString = ingrString + createStringLine(i, ingrArray.get(i).toString(), qtyArray.get(i).toString());
         }
 
-         ingredients.setText(ingrString);
+        ingredients.setText(ingrString);
         mImage1 = (ImageView)root.findViewById(R.id.imageView1);
         mImage1.setOnClickListener(this);
         mImage2 = (ImageView)root.findViewById(R.id.imageView2);
@@ -145,6 +149,7 @@ public class RecipeFullScreen extends Fragment implements View.OnClickListener{
         btnAddComment = (TextView)root.findViewById(R.id.btnAddComment);
         btnAddComment.setOnClickListener(this);
         commentText = (EditText)root.findViewById(R.id.commentText);
+        commentText.setCursorVisible(false);
         if(parseObject.get("public").equals("private")){
             commentsLayout.setVisibility(View.GONE);
         }
@@ -171,9 +176,13 @@ public class RecipeFullScreen extends Fragment implements View.OnClickListener{
         if(!parseObject.getBoolean("isBookmark")){
             getComments();
         }
+
+       //sv = (ScrollView)root.findViewById(R.id.scrollView2);
+        commentsList.getParent().requestChildFocus(ingredients,description);
+
         return root;
     }
-
+   
 
         public void getComments(){
             ParseQuery query = new ParseQuery("comment");
@@ -189,9 +198,16 @@ public class RecipeFullScreen extends Fragment implements View.OnClickListener{
                 public void done(Object o, Throwable throwable) {
                     if (o instanceof List) {
                         List<ParseObject> categories = (List<ParseObject>) o;
-                        CommentsListAdapter adapter = new CommentsListAdapter(getActivity(),categories);
-                        commentsList.setAdapter(adapter);
-                        setListViewHeightBasedOnChildren(commentsList);
+                        if(categories.size() == 0){
+                            commentText.setHint("Be first to write comment");
+                        } else {
+                            commentText.setHint("Write your comment here");
+
+                            CommentsListAdapter adapter = new CommentsListAdapter(getActivity(), categories);
+                            commentsList.setAdapter(adapter);
+                            setListViewHeightBasedOnChildren(commentsList);
+
+                        }
 
                     }
                 }
@@ -365,7 +381,7 @@ public class RecipeFullScreen extends Fragment implements View.OnClickListener{
         else if(btnAddComment.getId() == v.getId()){
             if(!commentText.getText().toString().equals(""))
             {
-                ParseObject comment = new ParseObject("comment");
+                final ParseObject comment = new ParseObject("comment");
                 comment.put("userName", currentUser.get("username"));
                 comment.put("comment",commentText.getText().toString());
                 comment.put("recipeId", parseObject.getObjectId());
@@ -388,7 +404,7 @@ public class RecipeFullScreen extends Fragment implements View.OnClickListener{
         }
     }
 
-    public static void setListViewHeightBasedOnChildren(ListView listView) {
+    public void setListViewHeightBasedOnChildren(ListView listView) {
         ListAdapter listAdapter = listView.getAdapter();
         if (listAdapter == null)
             return;
@@ -407,5 +423,6 @@ public class RecipeFullScreen extends Fragment implements View.OnClickListener{
         ViewGroup.LayoutParams params = listView.getLayoutParams();
         params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
         listView.setLayoutParams(params);
+
     }
 }

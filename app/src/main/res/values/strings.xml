@@ -28,6 +28,8 @@
     <color name="blue">#00BFFF</color>
     <color name="red">#F7D9D9</color>
     <color name="white">#FFFFFF</color>
+    <color name="grey_hint">#D0D0D0</color>
+    <color name="green">#00CC33</color>
 
 
 </resources>

@@ -137,6 +137,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
                 android:id="@+id/photoLine"
                 android:layout_height="15dp">
 
@@ -248,6 +249,7 @@
                     android:inputType="textMultiLine"
                     android:ems="10"
                     android:id="@+id/commentText"
+                    android:textColorHint="@color/grey_hint"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp" />
 
@@ -257,10 +259,9 @@
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="Add comment"
                     android:id="@+id/btnAddComment"
-                    android:layout_gravity="right"
+                    android:layout_gravity="center"
                     android:password="false"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginRight="10dp" />
+                    android:layout_marginBottom="10dp" />
             </LinearLayout>
         </LinearLayout>
 
