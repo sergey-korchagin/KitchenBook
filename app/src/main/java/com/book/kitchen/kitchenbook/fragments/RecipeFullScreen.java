@@ -222,6 +222,7 @@ public class RecipeFullScreen extends Fragment implements View.OnClickListener{
                 public void onResponse(Bitmap response) {
                     icon.setImageBitmap(response);
                     bmp = response;
+                    nullCounter = 0;
                 }
             }, new Response.ErrorListener() {
                 @Override
@@ -242,6 +243,7 @@ public class RecipeFullScreen extends Fragment implements View.OnClickListener{
 
                     mImage1.setImageBitmap(response);
                     bmp1 = response;
+                    nullCounter = 0;
                 }
             }, new Response.ErrorListener() {
                 @Override
@@ -262,6 +264,7 @@ public class RecipeFullScreen extends Fragment implements View.OnClickListener{
                 public void onResponse(Bitmap response) {
                     mImage2.setImageBitmap(response);
                     bmp2 = response;
+                    nullCounter = 0;
                 }
             }, new Response.ErrorListener() {
                 @Override
@@ -282,6 +285,7 @@ public class RecipeFullScreen extends Fragment implements View.OnClickListener{
                 public void onResponse(Bitmap response) {
                     mImage3.setImageBitmap(response);
                     bmp3 = response;
+                    nullCounter = 0;
                 }
             }, new Response.ErrorListener() {
                 @Override
