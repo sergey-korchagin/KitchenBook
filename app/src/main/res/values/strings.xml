@@ -25,6 +25,9 @@
     <string name="more_photos">More photos</string>
     <string name="cooking_time">Cooking time:</string>
 
+    <string name="empty_name">Please fill user name field</string>
+
+
     <color name="blue">#00BFFF</color>
     <color name="red">#F7D9D9</color>
     <color name="white">#FFFFFF</color>

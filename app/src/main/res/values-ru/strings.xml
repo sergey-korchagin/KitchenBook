@@ -19,6 +19,8 @@
     <string name="bookmarks">Мои закладки</string>
     <string name="cooking_time">Требуемое время:</string>
 
+    <string name="empty_name">Имя пользователя не может быть пустым</string>
+
 
 
 

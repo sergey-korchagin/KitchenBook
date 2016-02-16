@@ -73,6 +73,7 @@ public class PublicRecipes extends Fragment implements AdapterView.OnItemSelecte
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String data = searchView.getText().toString();
                 recyclerViewAdapter.filter(data.toLowerCase());
+
             }
 
             @Override

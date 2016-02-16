@@ -26,29 +26,43 @@
             android:layout_weight="1">
 
 
-            <EditText
-                android:layout_width="match_parent"
+
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/til"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName"
+                    android:hint="User name"
+                    android:ems="10"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center"
+                    android:id="@+id/userName"
+                    android:layout_gravity="center_horizontal" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/til2"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:hint="User name"
-                android:ems="10"
-                android:layout_marginBottom="10dp"
-                android:gravity="center"
-                android:id="@+id/userName"
-                android:layout_gravity="center_horizontal" />
+                android:layout_below="@+id/til">
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword"
+                    android:hint="Password"
+                    android:ems="10"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center"
+                    android:id="@+id/password"
+                    android:layout_gravity="center_horizontal" />
+            </android.support.design.widget.TextInputLayout>
 
 
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPassword"
-                android:hint="Password"
-                android:ems="10"
-                android:layout_marginBottom="10dp"
-                android:gravity="center"
-                android:id="@+id/password"
-                android:layout_gravity="center_horizontal" />
 
             <LinearLayout
                 android:orientation="horizontal"

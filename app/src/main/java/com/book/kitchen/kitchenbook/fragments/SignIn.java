@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.design.widget.TextInputLayout;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,11 +29,21 @@ public class SignIn extends Fragment implements View.OnClickListener {
     EditText userName;
     EditText userPassword;
     EditText userEmail;
+    TextInputLayout mTilName;
+    TextInputLayout mTilEmail;
+    TextInputLayout mTilPassword;
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_sign_in, container, false);
 
         btnSignIn = (TextView)root.findViewById(R.id.btnSignIn);
         btnSignIn.setOnClickListener(this);
+        mTilName = (TextInputLayout)root.findViewById(R.id.til);
+        mTilEmail = (TextInputLayout)root.findViewById(R.id.til2);
+        mTilPassword = (TextInputLayout)root.findViewById(R.id.til3);
+//        mTilName.setErrorEnabled(true);
+//        mTilEmail.setErrorEnabled(true);
+//        mTilPassword.setErrorEnabled(true);
+
 
         userName = (EditText)root.findViewById(R.id.userName);
         userPassword = (EditText)root.findViewById(R.id.password);
@@ -72,6 +83,18 @@ public class SignIn extends Fragment implements View.OnClickListener {
 
     private boolean checkEnteredData(){
 
+//        if(userName.getText().toString().equals(""))
+//        {
+//            mTilName.setError(getResources().getString(R.string.empty_name));
+//        }
+//        if(userEmail.getText().toString().equals(""))
+//        {
+//            mTilName.setError(getResources().getString(R.string.empty_name));
+//        }
+//        if(userPassword.getText().toString().equals(""))
+//        {
+//            mTilName.setError(getResources().getString(R.string.empty_name));
+//        }
         //NEED TO CHANGE
         if(userEmail.getText().toString().equals("") || userPassword.getText().toString().equals("") || userEmail.getText().toString().equals("") || !userEmail.getText().toString().contains("@")){
             return false;
